@@ -34,15 +34,19 @@ def main(seed):
     rng = np.random.default_rng(seed)
     df = pd.read_csv(ROOT / "outputs" / "A1" / "solicitudes_auditadas.csv")
     df = df.dropna(subset=["t_llegada_s"]).sort_values("t_llegada_s")
-    # Se usa el primer tramo estable, evitando unir tramos separados en el tiempo.
-    stable = df[(df.t_llegada_s >= 0) & (df.t_llegada_s < 670)].copy()
-    burst = df[(df.t_llegada_s >= 670) & (df.t_llegada_s < 840)].copy()
+    # Ambos tramos estables se analizan por separado para evitar un intervalo
+    # artificial de 170 segundos al calcular diferencias entre llegadas.
+    first = df[(df.t_llegada_s >= 0) & (df.t_llegada_s < 668)].copy()
+    last = df[(df.t_llegada_s >= 838) & (df.t_llegada_s <= 1200)].copy()
+    stable = pd.concat([first, last], ignore_index=True)
+    burst = df[(df.t_llegada_s >= 668) & (df.t_llegada_s < 838)].copy()
     n = len(stable)
-    duration = 670
+    duration = 668 + (1200 - 838)
     rate = n / duration
     rate_ci = [stats.chi2.ppf(alpha / 2, 2*n) / (2*duration),
                stats.chi2.ppf(1-alpha / 2, 2*(n+1)) / (2*duration)]
-    gaps = np.diff(stable.t_llegada_s.to_numpy())
+    gaps = np.concatenate([np.diff(first.t_llegada_s.to_numpy()),
+                           np.diff(last.t_llegada_s.to_numpy())])
     # La telemetría registra tiempos con precisión de 0,0001 s: puede haber empates.
     gap_mean = gaps.mean()
     observed_ks = stats.kstest(gaps, "expon", args=(0, gap_mean)).statistic
@@ -52,29 +56,49 @@ def main(seed):
         simulated = rng.exponential(gap_mean, len(gaps))
         simulated_ks[i] = stats.kstest(simulated, "expon", args=(0, simulated.mean())).statistic
     ks_p = (1 + np.count_nonzero(simulated_ks >= observed_ks)) / (reps + 1)
-    counts, _ = np.histogram(stable.t_llegada_s, bins=np.arange(0, 671, 10))
+    # Ventanas completas de 10 s por tramo: [0,660) y [838,1198).
+    # Se descartan 8 s y 2 s, respectivamente, solo para esta validación.
+    counts = np.concatenate([
+        np.histogram(first.loc[first.t_llegada_s < 660, "t_llegada_s"], bins=np.arange(0, 661, 10))[0],
+        np.histogram(last.loc[last.t_llegada_s < 1198, "t_llegada_s"], bins=np.arange(838, 1199, 10))[0],
+    ])
     dispersion = counts.var(ddof=1) / counts.mean()
     chi = (len(counts)-1) * dispersion
     dispersion_p = min(1., 2 * min(stats.chi2.cdf(chi, len(counts)-1),
                                    stats.chi2.sf(chi, len(counts)-1)))
     b1 = dict(n=n, duration_s=duration, rate_s=rate, confidence=confidence,
-              rate_interval=rate_ci, mean_gap_s=gap_mean, ks_stat=observed_ks,
+              rate_interval=rate_ci, mean_gap_s=gap_mean,
+              model_mean_gap_s=1/rate,
+              model_mean_gap_interval_s=[1/rate_ci[1], 1/rate_ci[0]],
+              numero_gaps=len(gaps), max_gap_s=float(gaps.max()), ks_stat=observed_ks,
               ks_bootstrap_p=ks_p, bootstrap_replicas=reps,
-              count_window_s=10, fano=dispersion, dispersion_p=dispersion_p,
+              count_window_s=10, ventanas_completas=len(counts),
+              exposicion_excluida_s=10, fano=dispersion, dispersion_p=dispersion_p,
               ties=int((gaps == 0).sum()))
 
     block_results = []
-    for name, group in [("estable", stable), ("alta_carga", burst)]:
+    p_stable = float((stable.intentos > 1).mean())
+    for name, group, parts in [("estable", stable, [first, last]),
+                               ("alta_carga", burst, [burst])]:
         retry = (group.intentos.to_numpy() > 1).astype(int)
-        num_blocks = len(retry)//100
-        blocks = retry[:100*num_blocks].reshape(num_blocks, 100).sum(axis=1)
+        # No formar bloques con solicitudes situadas a ambos lados del incidente.
+        block_parts = []
+        for part in parts:
+            part_retry = (part.intentos.to_numpy() > 1).astype(int)
+            complete = len(part_retry)//100
+            block_parts.append(part_retry[:100*complete].reshape(complete, 100).sum(axis=1))
+        blocks = np.concatenate(block_parts)
+        num_blocks = len(blocks)
         p = retry.mean()
         theoretical_variance = 100*p*(1-p)
         block_results.append(dict(regimen=name, solicitudes=len(retry), bloques=num_blocks,
             solicitudes_restantes=len(retry)-100*num_blocks, proporcion=p,
             media_bloques=blocks.mean(), media_binomial=100*p,
             varianza_bloques=blocks.var(ddof=1), varianza_binomial=theoretical_variance,
-            dispersion=blocks.var(ddof=1)/theoretical_variance))
+            dispersion=blocks.var(ddof=1)/theoretical_variance,
+            proporcion_referencia_estable=p_stable,
+            media_referencia_estable=100*p_stable,
+            diferencia_media_vs_referencia=blocks.mean()-100*p_stable))
         pd.DataFrame({"bloque": np.arange(1, num_blocks+1), "reintentos": blocks}).to_csv(
             OUT / f"B2_bloques_{name}.csv", index=False)
     pd.DataFrame(block_results).to_csv(OUT / "B2_contraste.csv", index=False)

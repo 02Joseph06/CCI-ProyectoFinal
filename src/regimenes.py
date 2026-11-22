@@ -6,6 +6,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs" / "A2"
@@ -47,23 +48,50 @@ def main():
     df = pd.read_csv(ROOT / "outputs" / "A1" / "solicitudes_auditadas.csv")
     tiempos = df.t_llegada_s.dropna().to_numpy()
     records = []
-    for ancho in (5, 10, 20, 30):
+    for ancho in (1, 5, 10, 15, 30):
         segments, bics = segmentar(tiempos, ancho)
         print(f"ancho={ancho}s segmentos={segments} BIC={np.round(bics, 1)}")
         for start, end, n in segments:
             records.append(dict(ancho_s=ancho, inicio_s=start, fin_s=end,
-                                solicitudes=n, tasa_s=n / (end - start)))
+                                solicitudes=n, tasa_s=n / (end - start),
+                                segmentos_seleccionados=len(segments), bic_min=min(bics)))
     pd.DataFrame(records).to_csv(OUT / "sensibilidad_segmentacion.csv", index=False)
-    main_segments, _ = segmentar(tiempos, 10)
+    main_segments, _ = segmentar(tiempos, 1)
+    first = df[(df.t_llegada_s >= 0) & (df.t_llegada_s < 668)].sort_values("t_llegada_s")
+    last = df[(df.t_llegada_s >= 838) & (df.t_llegada_s <= 1200)].sort_values("t_llegada_s")
+    comparisons = []
+    for name, result in (
+        ("KS tiempos entre llegadas", stats.ks_2samp(first.t_llegada_s.diff().dropna(),
+                                                     last.t_llegada_s.diff().dropna())),
+        ("KS latencia", stats.ks_2samp(first.latencia_ms, last.latencia_ms)),
+        ("Mann-Whitney latencia", stats.mannwhitneyu(first.latencia_ms, last.latencia_ms)),
+    ):
+        comparisons.append(dict(prueba=name, estadistico=result.statistic, p_valor=result.pvalue))
+    pd.DataFrame(comparisons).to_csv(OUT / "comparacion_tramos_estables.csv", index=False)
+    print("Comparación de tramos:", comparisons)
     counts, edges = np.histogram(tiempos, bins=np.arange(0, 1210, 10))
-    fig, ax = plt.subplots(figsize=(12, 4))
+    fig, (ax, lat, retry) = plt.subplots(3, 1, figsize=(12, 9), sharex=True)
     ax.step(edges[:-1], counts / 10, where="post", label="Tasa por intervalos de 10 s")
-    for start, end, n in main_segments:
-        ax.hlines(n / (end-start), start, end, colors="tab:red", linewidth=2)
+    for index, (start, end, n) in enumerate(main_segments):
+        ax.hlines(n / (end-start), start, end, colors="tab:red", linewidth=2,
+                  label="Tasa estimada por tramo" if index == 0 else None)
         ax.axvline(start, color="black", linestyle="--", alpha=.4)
-    ax.set(title="Figura 1. Evolución de la tasa de llegadas y segmentos estimados",
-           xlabel="Tiempo desde el inicio (s)", ylabel="Llegadas por segundo")
+    ax.set(title="Figura 1. Evolución del sistema y segmentos estimados",
+           ylabel="Llegadas por segundo")
     ax.legend()
+    ventanas = df.copy()
+    ventanas["ventana"] = (ventanas.t_llegada_s // 30).astype(int)
+    ventanas["reintento"] = (ventanas.intentos > 1).astype(float)
+    agregado = ventanas.groupby("ventana").agg(latencia=("latencia_ms", "mean"),
+                                                 reintento=("reintento", "mean"))
+    lat.plot(agregado.index * 30, agregado.latencia, label="Latencia media")
+    retry.plot(agregado.index * 30, agregado.reintento * 100, label="Reintentos")
+    lat.set_ylabel("Latencia (ms)")
+    retry.set(xlabel="Tiempo desde el inicio (s)", ylabel="Reintentos (%)")
+    for axis in (lat, retry):
+        for boundary in (668, 838):
+            axis.axvline(boundary, color="black", linestyle="--", alpha=.4)
+        axis.legend()
     fig.tight_layout()
     fig.savefig(OUT / "figura_1_llegadas.png", dpi=160)
     plt.close(fig)

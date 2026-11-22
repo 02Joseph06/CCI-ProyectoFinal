@@ -1,0 +1,235 @@
+id_solicitud,t_llegada_s,tam_kb,cache_hit,version,red_ms,gpu_ms,latencia_ms,intentos,exito,motivos_auditoria
+288,11.5361,173.06,1,A,21.24,0.0,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+309,13.0297,222.94,0,A,24.53,34.56,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+336,13.9723,145.87,0,A,,21.15,48.63,1,1,campos ausentes o invalidados: red_ms
+353,14.7193,176.5,0,B,27.62,68.14,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+723,29.0527,198.59,0,B,29.94,61.19,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+960,39.4303,166.71,1,A,20.41,,20.41,1,1,campos ausentes o invalidados: gpu_ms
+1386,56.6987,264.68,1,B,32.82,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+1759,72.5328,142.12,1,A,24.96,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+1775,73.1834,522.24,0,B,31.18,62.92,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+1955,79.2764,297.04,1,A,28.57,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+2021,81.6941,97.0,1,B,,0.0,19.06,1,1,campos ausentes o invalidados: red_ms
+2315,92.4509,26.59,0,A,26.01,27.07,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+2367,95.0029,218.44,0,B,31.51,43.22,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+2984,120.7523,191.74,0,B,28.66,16.86,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+3182,129.7413,284.89,1,B,35.24,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+3717,151.4135,257.38,0,A,33.24,51.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+3882,157.4941,280.02,0,B,31.37,65.9,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+3920,159.0087,157.4,1,B,34.94,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+3975,160.8932,223.36,0,A,,31.54,112.7,1,1,campos ausentes o invalidados: red_ms
+3996,161.7086,257.91,0,B,34.78,59.89,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+4088,165.5816,273.55,0,A,,67.64,100.92,1,1,campos ausentes o invalidados: red_ms
+4226,172.0553,178.11,0,A,32.65,50.4,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+4844,198.215,252.77,0,B,26.15,15.19,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+4903,200.3514,35.57,1,A,30.68,0.0,,3,0,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+5109,208.7664,202.99,0,B,25.74,14.56,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+5170,211.2236,214.55,1,B,,0.0,30.77,1,1,campos ausentes o invalidados: red_ms
+5351,218.8869,94.24,0,A,19.41,19.36,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+5475,224.3148,112.13,0,A,,27.9,,1,1,"latencia_ms: tiempo negativo | campos ausentes o invalidados: red_ms, latencia_ms"
+5509,226.2181,114.23,1,A,,0.0,33.07,2,1,campos ausentes o invalidados: red_ms
+5914,241.8445,482.04,0,B,24.4,29.22,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+6277,256.2134,457.99,1,B,23.36,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+6319,257.6874,93.5,0,A,36.8,22.37,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+6332,258.1101,72.42,1,A,33.56,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+6524,264.9978,157.06,0,A,30.17,15.76,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+6990,284.0336,275.43,0,A,29.24,,61.07,1,1,campos ausentes o invalidados: gpu_ms
+7300,297.7568,338.37,0,A,35.46,78.99,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+7552,306.9493,362.67,0,B,27.59,79.88,,3,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+7746,315.1451,151.61,1,B,30.43,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+7852,320.1072,131.82,1,A,27.97,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+7890,321.3112,614.2,1,B,30.52,0.0,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+8272,336.8675,153.67,0,A,29.86,59.44,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8318,338.458,451.17,0,B,35.37,91.87,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8319,338.5101,45.57,1,A,30.0,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8419,341.8242,159.33,0,A,,43.37,77.34,1,1,campos ausentes o invalidados: red_ms
+8595,349.2212,39.36,1,B,37.14,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8640,350.6881,177.3,0,A,24.21,74.4,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8719,354.4951,94.44,1,A,35.35,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+8815,358.4847,101.67,1,B,33.16,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8889,361.7793,137.95,0,A,34.31,59.67,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+8988,365.2383,155.21,0,A,28.39,9.67,,3,0,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+8999,365.4769,103.22,1,B,29.64,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+9000,365.4804,113.16,0,B,37.18,31.65,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+9162,371.4856,217.96,0,B,22.83,30.37,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+9253,376.2318,162.54,1,B,35.51,,35.51,2,1,campos ausentes o invalidados: gpu_ms
+9312,378.4813,106.15,0,A,29.62,6.03,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+9329,378.9394,83.91,1,A,26.0,,26.0,1,1,campos ausentes o invalidados: gpu_ms
+9614,391.3702,391.05,0,A,26.37,68.21,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+10530,427.6695,158.53,0,B,30.31,25.88,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+10729,435.4156,234.9,0,B,35.03,98.31,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+10733,435.4573,506.87,1,A,26.2,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+10839,440.2216,423.12,0,A,,96.67,118.06,1,1,campos ausentes o invalidados: red_ms
+11168,452.8742,182.73,0,A,36.15,,81.87,1,1,campos ausentes o invalidados: gpu_ms
+11176,453.0716,284.07,0,A,28.85,44.41,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+11527,467.7657,272.07,0,B,35.86,63.14,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+11671,472.5785,40.3,0,B,31.69,7.83,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+11732,475.2952,477.35,0,B,,74.92,107.38,1,1,campos ausentes o invalidados: red_ms
+11811,478.4188,345.24,0,B,28.74,89.7,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+11818,478.7281,98.01,1,B,30.5,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+11909,482.8633,863.78,0,A,29.65,99.61,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+11944,484.5914,250.14,0,B,31.95,27.6,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+12020,487.7108,331.41,1,A,27.26,,27.26,1,1,campos ausentes o invalidados: gpu_ms
+12153,493.3264,397.96,0,A,,123.28,148.68,1,1,campos ausentes o invalidados: red_ms
+12181,494.4847,129.73,0,B,32.25,,61.27,1,1,campos ausentes o invalidados: gpu_ms
+12438,504.5305,442.44,0,A,28.45,51.86,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+12593,511.2097,51.6,0,B,29.84,,58.42,1,1,campos ausentes o invalidados: gpu_ms
+12699,515.5382,131.03,1,B,27.0,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+13092,530.7312,89.62,1,B,36.36,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+13126,532.3627,203.63,1,B,26.35,0.0,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+13207,536.2048,306.48,1,A,27.92,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+13411,544.4012,250.88,0,B,27.11,57.66,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+13760,558.1507,94.32,1,A,29.09,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+13824,561.1014,407.23,1,B,31.14,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+13966,566.0418,193.19,1,A,30.75,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+14132,572.8589,216.84,0,A,28.5,54.74,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+14371,582.7851,53.41,1,B,29.23,,29.23,1,1,campos ausentes o invalidados: gpu_ms
+14562,590.7115,346.92,1,B,30.12,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+14572,590.9387,166.04,1,B,29.44,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+14959,607.2006,317.29,0,B,25.34,23.17,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+14970,607.7159,476.62,0,B,33.35,43.39,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+15046,610.7834,363.58,0,A,28.54,138.18,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+15100,613.3503,108.97,0,A,28.09,25.79,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+15494,628.1667,76.65,0,B,24.5,40.99,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+15700,636.5123,77.68,1,B,,0.0,26.35,1,1,campos ausentes o invalidados: red_ms
+15704,636.6273,192.44,0,A,,42.92,79.04,1,1,campos ausentes o invalidados: red_ms
+15785,639.7883,172.7,1,A,,0.0,26.56,2,1,campos ausentes o invalidados: red_ms
+15792,639.9812,207.18,0,A,29.16,53.66,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+15821,641.2573,139.61,0,A,25.12,27.5,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+15900,644.8768,168.9,0,B,35.51,56.64,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+15919,645.5815,59.48,1,A,24.72,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+16072,652.309,396.65,0,B,36.17,93.43,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+16181,657.1057,108.17,0,A,29.57,35.65,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+16224,658.3287,161.23,0,A,27.68,39.98,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+16481,668.6292,37.16,1,B,26.53,,26.53,3,1,campos ausentes o invalidados: gpu_ms
+16785,674.2029,105.43,1,B,25.9,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+16791,674.2803,462.27,0,A,,69.68,117.34,1,1,campos ausentes o invalidados: red_ms
+16863,675.7938,44.71,0,B,35.57,,53.92,1,1,campos ausentes o invalidados: gpu_ms
+16909,676.7357,43.56,0,A,33.01,12.43,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+16922,676.8475,330.28,0,B,,94.45,196.35,1,1,campos ausentes o invalidados: red_ms
+16925,676.9041,285.15,0,A,,36.24,126.6,1,1,campos ausentes o invalidados: red_ms
+17048,679.3223,114.28,1,B,,0.0,21.59,1,1,campos ausentes o invalidados: red_ms
+17134,681.0204,372.51,1,A,28.85,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+17511,688.3536,59.07,1,A,,0.0,32.56,1,1,campos ausentes o invalidados: red_ms
+17972,697.2639,399.5,0,B,26.87,,107.99,2,1,campos ausentes o invalidados: gpu_ms
+18072,699.2257,226.69,0,B,24.47,,82.16,1,1,campos ausentes o invalidados: gpu_ms
+18435,706.6706,81.47,1,B,32.95,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+18626,710.454,114.54,1,B,33.52,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+18662,711.0353,167.77,1,B,24.7,0.0,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+18676,711.3381,110.45,1,B,,0.0,28.06,1,1,campos ausentes o invalidados: red_ms
+18962,716.3221,95.01,0,B,29.2,11.19,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+19478,725.7501,356.45,0,A,34.51,31.97,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+19495,726.0383,266.47,0,B,28.83,35.34,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+19818,731.8565,604.28,0,B,27.34,51.43,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+19902,733.5201,163.16,1,A,33.77,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+19907,733.6218,506.42,0,B,34.89,91.85,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20030,736.0362,50.53,1,A,27.64,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20045,736.3616,304.24,1,A,34.32,,34.32,2,1,campos ausentes o invalidados: gpu_ms
+20072,736.8421,235.94,0,B,30.33,37.21,,3,0,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+20140,738.4081,196.01,0,B,26.49,33.27,,3,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+20150,738.5961,297.6,1,A,32.96,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20241,740.4611,98.85,0,A,28.9,23.35,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20291,741.3764,148.78,1,A,24.59,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20654,748.6261,346.53,0,A,28.75,44.04,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+20664,748.8591,217.09,1,B,27.95,0.0,,3,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+20990,754.6679,180.26,0,B,20.56,,117.98,1,1,campos ausentes o invalidados: gpu_ms
+21139,757.4599,155.01,1,A,36.13,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+21167,758.0439,389.89,0,A,30.19,75.81,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+21312,760.8869,292.84,1,B,32.09,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+21396,762.2034,497.54,1,A,27.76,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+21641,766.741,295.58,0,A,22.29,51.5,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+21765,769.3065,199.42,0,B,30.69,79.58,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+22223,777.9992,250.18,0,B,,83.6,167.95,1,1,campos ausentes o invalidados: red_ms
+22511,783.6018,60.98,0,B,27.52,19.61,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+23037,793.636,70.72,1,A,28.03,,28.03,3,1,campos ausentes o invalidados: gpu_ms
+23346,800.1817,282.56,0,A,36.27,,289.91,1,1,campos ausentes o invalidados: gpu_ms
+23443,801.8868,220.2,1,B,25.36,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+23622,805.3485,58.42,0,B,41.71,17.21,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+23765,808.0438,57.11,1,A,25.15,0.0,,3,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+23832,809.3453,127.38,0,B,30.61,35.67,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+23890,810.3337,150.14,1,A,23.7,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+24012,812.6045,158.13,1,B,36.29,,36.29,1,1,campos ausentes o invalidados: gpu_ms
+24059,813.3653,180.56,0,B,26.79,31.18,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+24124,814.6503,596.7,0,B,25.19,186.76,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+24265,817.3802,171.11,1,B,25.0,,25.0,2,1,campos ausentes o invalidados: gpu_ms
+24274,817.5113,215.03,1,B,30.3,0.0,,3,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+24338,818.6264,365.77,0,B,24.88,76.71,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+24674,825.4004,390.4,0,B,26.0,44.8,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+24706,826.2439,252.3,1,A,20.45,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+24740,826.7592,216.22,0,A,33.01,,133.92,3,1,campos ausentes o invalidados: gpu_ms
+24797,827.8216,136.45,0,B,25.38,36.77,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+24904,830.1364,20.14,1,A,32.68,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+25465,844.1329,237.78,1,B,23.97,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+25792,858.7451,53.78,1,A,35.5,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+25965,865.4525,147.66,0,B,32.13,,75.79,2,1,campos ausentes o invalidados: gpu_ms
+26030,868.1651,48.27,0,B,,31.21,109.03,1,1,campos ausentes o invalidados: red_ms
+26209,875.7057,334.92,0,A,23.77,69.37,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+26220,876.2712,425.16,0,B,30.58,89.88,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+26238,877.0254,405.79,0,A,28.96,66.7,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+26345,881.9959,297.27,0,B,25.55,43.78,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+26400,884.3691,125.32,0,A,27.12,,43.4,1,1,campos ausentes o invalidados: gpu_ms
+26423,885.4286,35.53,0,B,31.91,,48.74,1,1,campos ausentes o invalidados: gpu_ms
+26691,896.345,251.99,0,A,23.29,76.82,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+26929,905.9162,138.45,0,A,,56.22,82.15,1,1,campos ausentes o invalidados: red_ms
+26972,907.5011,337.41,0,B,31.07,79.89,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+27069,911.3972,59.09,1,A,28.42,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+27126,913.2561,111.22,1,B,30.51,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+27600,933.9675,289.07,0,B,,76.39,111.52,1,1,campos ausentes o invalidados: red_ms
+27829,943.6314,220.36,0,B,29.34,36.27,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+27908,946.6115,545.42,0,A,18.89,108.18,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+28001,950.7531,273.93,0,B,29.6,79.86,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+28129,955.6621,111.19,1,A,25.13,0.0,,2,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+28405,966.3714,710.9,0,A,,57.27,102.29,1,1,campos ausentes o invalidados: red_ms
+28434,967.6535,57.06,0,B,31.36,44.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+28584,974.0269,574.99,0,B,,84.56,119.27,1,1,campos ausentes o invalidados: red_ms
+28652,977.2611,279.72,0,A,32.54,62.13,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+28738,980.8996,129.25,1,B,33.25,0.0,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+28964,990.3457,35.3,1,A,32.34,,32.34,3,0,campos ausentes o invalidados: gpu_ms
+29004,992.3843,85.49,0,B,27.14,38.01,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+29068,994.7634,259.25,0,A,32.11,29.64,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+29071,994.7923,82.09,1,A,33.71,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+29232,1001.3185,84.23,1,B,26.29,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+29332,1006.2258,311.31,0,B,29.26,69.36,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+29629,1018.1759,167.76,1,A,32.35,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+29717,1022.0245,398.66,0,A,24.34,,77.23,2,1,campos ausentes o invalidados: gpu_ms
+29764,1023.9831,152.18,0,B,33.14,59.59,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+29827,1025.9974,141.88,1,B,,0.0,28.44,1,1,campos ausentes o invalidados: red_ms
+29854,1027.0373,209.0,0,A,32.61,47.04,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+30084,1036.7414,530.62,0,A,32.76,,162.74,1,1,campos ausentes o invalidados: gpu_ms
+30125,1038.4492,324.41,0,A,,32.52,66.29,2,1,campos ausentes o invalidados: red_ms
+30153,1039.6401,371.27,1,A,,0.0,40.24,1,1,campos ausentes o invalidados: red_ms
+30297,1045.564,490.63,1,A,34.67,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+30404,1049.985,290.68,1,B,,0.0,29.51,1,1,campos ausentes o invalidados: red_ms
+30582,1058.6062,193.72,0,A,28.39,88.34,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+30764,1066.4441,174.07,0,A,26.94,31.17,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+30766,1066.4838,266.09,1,B,32.54,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+30917,1072.3373,361.97,1,A,31.83,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+31026,1076.3995,214.54,0,A,26.23,26.62,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+31064,1077.677,179.23,1,B,32.38,,32.38,1,1,campos ausentes o invalidados: gpu_ms
+31386,1091.4924,565.6,0,A,30.21,,161.42,1,1,campos ausentes o invalidados: gpu_ms
+31572,1098.8865,557.28,0,B,31.11,104.19,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+31638,1101.4167,291.18,0,A,22.13,,72.75,1,1,campos ausentes o invalidados: gpu_ms
+31649,1101.9926,127.41,1,B,27.37,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+31969,1115.4764,141.81,1,B,25.88,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+31983,1116.4924,351.44,0,B,,38.62,75.46,1,1,campos ausentes o invalidados: red_ms
+32062,1120.0554,141.07,1,B,34.96,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+32088,1121.295,171.2,0,B,27.58,,36.52,3,0,campos ausentes o invalidados: gpu_ms
+32140,1123.2881,225.9,1,A,,0.0,27.3,1,1,campos ausentes o invalidados: red_ms
+32384,1134.3697,409.74,0,B,,116.56,151.98,1,1,campos ausentes o invalidados: red_ms
+32520,1139.7438,97.41,1,B,26.93,,26.93,1,1,campos ausentes o invalidados: gpu_ms
+32596,1142.685,93.36,1,B,29.67,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+32779,1150.2854,48.86,0,A,26.46,12.02,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+32907,1155.7914,659.45,0,B,23.11,88.38,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+32957,1157.6523,117.94,0,A,31.24,37.54,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+32998,1159.7263,220.16,0,B,27.32,,111.94,1,1,campos ausentes o invalidados: gpu_ms
+33100,1163.906,480.5,0,B,30.89,47.69,,2,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+33205,1168.0795,290.75,0,A,30.46,78.71,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+33275,1171.1907,296.86,0,A,34.43,69.96,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+33369,1174.975,276.54,0,B,34.27,53.44,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+33408,1176.9302,371.54,1,A,26.99,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+33502,1180.6084,124.46,1,B,30.27,0.0,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+33512,1181.1309,218.0,0,B,29.52,,52.48,1,1,campos ausentes o invalidados: gpu_ms
+33693,1188.7712,180.5,0,B,,33.31,76.57,1,1,campos ausentes o invalidados: red_ms
+33762,1191.4133,193.62,1,A,30.31,0.0,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
+33765,1191.5114,440.21,0,A,30.77,71.69,,1,1,latencia_ms: tiempo negativo | campos ausentes o invalidados: latencia_ms
+33840,1194.8417,290.08,0,B,32.02,67.62,,1,1,"latencia_ms: inferior a red más GPU, fuera del redondeo | campos ausentes o invalidados: latencia_ms"
