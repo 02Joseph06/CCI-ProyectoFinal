@@ -1,0 +1,9 @@
+criterio,cantidad
+duplicado exacto eliminado,99
+gpu_ms: ausente o contradictorio,33
+identificador con registros diferentes,2
+"latencia_ms: inferior a red más GPU, fuera del redondeo",67
+latencia_ms: tiempo negativo,101
+red_ms: ausente o contradictorio,34
+tam_kb: ausente o contradictorio,2
+tam_kb: tamaño extremo con posible error de escala,48

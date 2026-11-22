@@ -1,0 +1,7 @@
+# Documentación y cálculos de trabajo locales
+/documentos/
+/docs/
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.github/
