@@ -1,7 +1,7 @@
 # CCI-ProyectoFinal
 
 Análisis reproducible de telemetría para el proyecto de Ciencia Computacional
-Intermedia. Las partes A y B están implementadas en el notebook
+Intermedia. Las partes A, B, C y D están implementadas en el notebook
 [`notebooks/partes_A_B.ipynb`](notebooks/partes_A_B.ipynb).
 
 1. Cree un entorno Python e instale las dependencias con
@@ -21,3 +21,9 @@ La selección del régimen estable y las exclusiones aplicadas a la telemetría
 son supuestos de análisis. En particular, las tasas obtenidas después de
 excluir filas por datos de latencia describen las solicitudes conservadas y
 pueden diferir de las tasas del tráfico original.
+
+En C3 se conserva la referencia Anderson–Darling de 0,656 elegida por el
+grupo y, por separado, el valor 0,631 calculado por SciPy 1.18.1. Esa versión
+se fija en las dependencias porque la interfaz de valores críticos cambia en
+versiones posteriores. Las deducciones manuscritas y la interpretación para
+el informe siguen siendo responsabilidad del grupo.

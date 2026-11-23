@@ -1,0 +1,21 @@
+{
+  "n": 24956,
+  "n_cache": 10260,
+  "n_positivos": 14696,
+  "p_cache": 0.41112357749639367,
+  "mu_positiva_ms": 53.288025993467606,
+  "var_positiva_ddof0_ms2": 1365.8242988047136,
+  "media_modelo_ms": 31.380062109312384,
+  "media_empirica_ms": 31.380062109312387,
+  "var_modelo_ddof0_ms2": 1491.7749942219798,
+  "var_empirica_ddof0_ms2": 1491.77499422198,
+  "var_muestral_ddof1_ms2": 1491.834772823231,
+  "lognormal": {
+    "mu_log_ms": 3.7648713104104856,
+    "sigma_log": 0.6592925100386585,
+    "log_verosimilitud": -70059.09260464262,
+    "convergencia": true,
+    "mensaje": "Optimization terminated successfully.",
+    "gradiente_norma": 7.328604253514419e-16
+  }
+}

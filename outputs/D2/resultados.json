@@ -1,0 +1,32 @@
+{
+  "todas": {
+    "n": 24956,
+    "media_ms": 31.380062109312387,
+    "var_empirica_ddof0_ms2": 1491.77499422198,
+    "var_muestral_ddof1_ms2": 1491.834772823231,
+    "esperanza_var_condicional_ms2": 1171.7031935309665,
+    "var_esperanza_condicional_ms2": 320.0718006910166,
+    "suma_componentes_ms2": 1491.774994221983,
+    "fraccion_explicada": 0.214557692635106,
+    "comprobacion_media_ms": 31.380062109312387
+  },
+  "sin_cache": {
+    "n": 14696,
+    "media_ms": 53.288025993467606,
+    "var_empirica_ddof0_ms2": 1365.8242988047136,
+    "var_muestral_ddof1_ms2": 1365.9172436362076,
+    "esperanza_var_condicional_ms2": 903.6840221136522,
+    "var_esperanza_condicional_ms2": 462.1402766910629,
+    "suma_componentes_ms2": 1365.824298804715,
+    "fraccion_explicada": 0.33835997580032806,
+    "comprobacion_media_ms": 53.288025993467606
+  },
+  "metodo_continuo": "25 grupos por cuantiles y LOWESS lineal local tricúbico",
+  "cuantiles_solicitados": 25,
+  "cuantiles_obtenidos": 25,
+  "lowess_frac": 0.15,
+  "lowess_iteraciones_robustas": 0,
+  "lowess_puntos": 120,
+  "limite_superior_grafica_kb": 876.9867499999988,
+  "nota": "Se representa hasta el percentil 99,5 % del tamaño; el suavizado no prueba ausencia de sesgo."
+}

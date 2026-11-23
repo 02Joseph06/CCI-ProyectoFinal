@@ -1,0 +1,8 @@
+{
+  "n": 14696,
+  "covarianza_muestral_kb_ms": 4526.56130844586,
+  "pearson_r": 0.6938384563730369,
+  "pearson_p_numerico": 0.0,
+  "nota_p": "Si p se imprime como 0, se trata de subdesbordamiento numérico, no probabilidad exactamente nula.",
+  "r_cuadrado": 0.4814118035421186
+}

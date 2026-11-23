@@ -1,0 +1,45 @@
+{
+  "n": 14696,
+  "ols": {
+    "beta": [
+      15.099850275109008,
+      0.14526892246466697
+    ],
+    "se_clasico": [
+      0.39384602380718475,
+      0.001243814582040756
+    ],
+    "se_hc3": [
+      0.43868081228458217,
+      0.002040253520915489
+    ],
+    "max_leverage": 0.00506864567088802,
+    "condicion_matriz": 322643.64628190297
+  },
+  "wls": {
+    "beta": [
+      14.948770574566511,
+      0.1447036754760385
+    ],
+    "se_clasico": [
+      0.08295735976614729,
+      0.0012591930463721592
+    ],
+    "se_hc3": [
+      1.010697508625926,
+      0.0068700937661319616
+    ],
+    "max_leverage": 0.31431734610212064,
+    "condicion_matriz": 5573.863662580394
+  },
+  "breusch_pagan_lm": 1874.881655477428,
+  "bp_gl": 1,
+  "bp_p_numerico": 0.0,
+  "intervalos": {
+    "nivel": 0.9,
+    "distribucion": "t de Student",
+    "grados_libertad": 14694,
+    "valor_critico": 1.6449573336211347
+  },
+  "nota": "p numérico cero puede indicar subdesbordamiento; WLS asume la forma de pesos elegida."
+}

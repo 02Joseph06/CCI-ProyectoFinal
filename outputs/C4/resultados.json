@@ -1,0 +1,16 @@
+{
+  "N": 16,
+  "n_positivos": 14696,
+  "media_ms": 53.288025993467606,
+  "var_muestral_ms2": 1365.9172436362076,
+  "umbral_ms": 1092.6084158954818,
+  "prob_normal": 0.05224656629413653,
+  "prob_gamma": 0.04494678957869444,
+  "prob_remuestreo_iid": 0.063425,
+  "replicas": 200000,
+  "IC_monte_carlo_90": [
+    0.06253075333640754,
+    0.06432860926314318
+  ],
+  "nota": "El remuestreo i.i.d. usa la distribución empírica; no preserva dependencia temporal ni prueba que sea la distribución poblacional."
+}

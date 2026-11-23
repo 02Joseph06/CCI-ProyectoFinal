@@ -1,0 +1,54 @@
+{
+  "n": 24956,
+  "scipy_version": "1.18.1",
+  "media_ms": 29.610606267029976,
+  "desviacion_muestral_ms": 4.6058674649054865,
+  "asimetria_corregida": -0.0038977867846973838,
+  "exceso_curtosis_corregido": -0.019293692261624206,
+  "KS_D": 0.004552755850951273,
+  "KS_p_nominal_parametros_estimados": 0.6772772237947604,
+  "AD_estadistico": 0.5910893573018257,
+  "AD_valores_criticos": [
+    0.561,
+    0.631,
+    0.752,
+    0.873,
+    1.035
+  ],
+  "AD_significancias_pct": [
+    15.0,
+    10.0,
+    5.0,
+    2.5,
+    1.0
+  ],
+  "colas": [
+    {
+      "umbral_ms": 35,
+      "empirica": 0.12205481647699952,
+      "normal": 0.12097738467251001
+    },
+    {
+      "umbral_ms": 40,
+      "empirica": 0.012101298284981568,
+      "normal": 0.012045131245645787
+    },
+    {
+      "umbral_ms": 45,
+      "empirica": 0.0004007052412245552,
+      "normal": 0.0004169977020784897
+    }
+  ],
+  "AD_critico_10_scipy_instalado": 0.631,
+  "AD_referencia_10_indicada_por_estudiante": 0.656,
+  "AD_decision_referencia_estudiante": "no rechaza",
+  "percentil_empirico_999_ms": 43.33,
+  "bootstrap_percentil_replicas": 2000,
+  "bootstrap_confianza": 0.9,
+  "bootstrap_IC_ms": [
+    42.964049999999844,
+    43.70494999999981
+  ],
+  "percentil_normal_999_ms": 43.843806705008156,
+  "nota": "KS con parámetros ajustados: p nominal; el bootstrap remuestrea observaciones, no bloques temporales. El crítico 0,656 es la referencia elegida por el estudiante; SciPy 1.18.1 calcula 0,631, por lo que no se atribuye 0,656 a esa versión."
+}

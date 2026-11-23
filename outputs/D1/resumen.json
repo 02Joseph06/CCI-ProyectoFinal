@@ -1,0 +1,17 @@
+{
+  "n": 24956,
+  "marginal_clase": {
+    "pequeña": 0.2656275044077576,
+    "mediana": 0.6543516589196987,
+    "grande": 0.08002083667254367
+  },
+  "marginal_cache": {
+    "0": 0.5888764225036064,
+    "1": 0.4111235774963936
+  },
+  "chi_cuadrado": 950.1616336695627,
+  "grados_libertad": 2,
+  "p_valor": 4.731760892733954e-207,
+  "frecuencia_esperada_minima": 821.0137842602982,
+  "intervalos": "Wald normal al 90 %; solicitado por el estudiante."
+}

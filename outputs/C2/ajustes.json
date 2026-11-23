@@ -1,0 +1,24 @@
+{
+  "n_sin_cache": 14696,
+  "gamma": {
+    "k": 2.5256598603388554,
+    "theta_ms": 21.098655032840576,
+    "log_verosimilitud": -70333.5700044394,
+    "convergencia": true,
+    "mensaje": "Optimization terminated successfully.",
+    "gradiente_norma": 6.52616509373158e-09,
+    "momentos_k": 2.078906117856119,
+    "momentos_theta_ms": 25.632723640460064,
+    "ks_distancia": 0.03975614700695762
+  },
+  "lognormal": {
+    "mu_log_ms": 3.7648713104104856,
+    "sigma_log": 0.6592925100386585,
+    "log_verosimilitud": -70059.09260464262,
+    "convergencia": true,
+    "mensaje": "Optimization terminated successfully.",
+    "gradiente_norma": 7.328604253514419e-16,
+    "ks_distancia": 0.01071893262702378
+  },
+  "nota_ks": "Distancia descriptiva con parámetros estimados en los mismos datos; no es una prueba calibrada."
+}
