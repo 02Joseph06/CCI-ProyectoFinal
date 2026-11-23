@@ -1,0 +1,9 @@
+{
+  "S": 2046185499,
+  "lambda_base_s": 24.229126213592235,
+  "lambda_proyectada_s": 36.34368932038835,
+  "prob_cache": 0.41112357749639367,
+  "media_lognormal_ms": 53.63514895841986,
+  "modelo": "Poisson, caché Bernoulli, red normal, servicio lognormal independiente, FIFO",
+  "limitacion": "λ cuenta filas de solicitudes; no se sabe si incluye reintentos individuales. La red normal puede ser negativa, con probabilidad ínfima. c=1 es inestable: el resultado describe solo el horizonte finito. IC entre réplicas no incluye incertidumbre de calibración."
+}

@@ -1,0 +1,33 @@
+# MEMORANDO EJECUTIVO — BORRADOR PARA REVISIÓN
+
+
+
+Para: Dirección Técnica (CTO), Andes Vision AI | De: Equipo SRE y Datos
+
+Fecha: 22 de noviembre de 2026 | Asunto: confiabilidad, versiones y capacidad
+
+ESTADO: cifras calculadas con hipótesis y discrepancias pendientes; no es una recomendación validada.
+
+1. SERVICIO OBSERVADO
+
+En 1.030 s estables se retuvieron 24.956 solicitudes: tasa 24.229/s (IC 90 % [23.977; 24.483]) y caché 41.11%. La latencia media es 65.17 ms; el bootstrap por bloques da [64.52; 65.81] ms. La tasa se refiere a filas conservadas tras auditoría.
+
+La proporción observada de latencias superiores a 210 ms es 1.14%. En F6, la estimación de fallos por intento cambia de 15.33% a 20.47%; la estabilidad de todas las distribuciones y la causa del cambio no están demostradas.
+
+2. COMPARACIÓN B − A
+
+GPU sin caché: +0.530 ms; IC conjunto 90 % [-0.767; 1.828] ms. Reintentos: +0.637 puntos porcentuales; violación del SLO: +0.084 puntos porcentuales. La decisión sobre la versión debe considerar los intervalos completos; no rechazar una diferencia no prueba equivalencia.
+
+3. CAPACIDAD Y ALERTAS: RESULTADOS CONDICIONALES
+
+Con el tráfico multiplicado por 1,5, G2 estima violaciones de 3.07%, 1.02% y 0.91% para 2, 3 y 4 GPU. En G1 la cola simulada (1.36%) difiere de la observada (1.14%); los intervalos de G2 miden error de simulación con parámetros fijos.
+
+Para D1 y D2, E estima 2.41 falsas alarmas/día y 73.1% de probabilidad de incidente por alerta en producción, bajo transportabilidad de tasas. La distribución diaria supone minutos independientes y tasa constante.
+
+La propagación G3 y la recomendación final están pendientes de las decisiones del grupo. El significado de los reintentos en la tasa observada sigue sin comprobarse.
+
+
+
+Fuentes: salidas reproducibles B, C1, E2, E4, F2, F3, F6 y G1–G2; ver `documentos/calculos/discrepancias_pendientes.md`. 
+
+Las cifras propuestas por el grupo están conservadas en `documentos/G4/memorando_aportado_por_el_grupo.md`.

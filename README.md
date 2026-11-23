@@ -3,6 +3,10 @@
 Análisis reproducible de telemetría para el proyecto de Ciencia Computacional
 Intermedia. Las partes A, B, C y D están implementadas en el notebook
 [`notebooks/partes_A_B.ipynb`](notebooks/partes_A_B.ipynb).
+El mismo notebook incluye E, F y G1–G2, más un contraste parcial de G3 y un
+memorando G4 provisional. Las discrepancias y decisiones pendientes están en
+`documentos/calculos/discrepancias_pendientes.md` y deben resolverse antes de
+considerar definitivas las recomendaciones.
 
 1. Cree un entorno Python e instale las dependencias con
    `python -m pip install -r requirements.txt`.
