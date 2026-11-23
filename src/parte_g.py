@@ -12,7 +12,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy import stats
+from scipy import stats, integrate
 
 ROOT = Path(__file__).resolve().parents[1]
 SEED = 2046185499
@@ -76,6 +76,186 @@ def mmc_espera(tasa_gpu_s, media_servicio_ms, servidores):
     prob_espera = cola / (suma + cola)
     espera_ms = 1000 * prob_espera / (servidores * (1000 / media_servicio_ms) - tasa_gpu_s)
     return rho, prob_espera, espera_ms
+
+
+def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
+                          calentamiento_s, umbral_ms, epsilon, regla,
+                          simulador=simular_fifo):
+    """Evalúa escenarios suministrados por el usuario, sin generarlos.
+
+    Cada escenario debe contener tasa_s, prob_cache, mu_log, sigma_log,
+    red_media y red_desv. Se conserva su dependencia conjunta: el llamador
+    es responsable de construir cada fila y documentar su procedimiento.
+    `regla` es 'estimacion' o 'limite_superior_90'; la segunda usa un IC t
+    entre réplicas de simulación, no un IC de los parámetros calibrados.
+    Devuelve una fila por escenario y capacidad. Ningún c cumple si su cola
+    es inestable. Una capacidad sin cumplimiento queda como valor faltante.
+    """
+    if not isinstance(rng, np.random.Generator):
+        raise TypeError("rng debe ser un numpy.random.Generator")
+    if replicas < 2 or int(replicas) != replicas:
+        raise ValueError("Se necesitan al menos dos réplicas enteras")
+    if regla not in ("estimacion", "limite_superior_90"):
+        raise ValueError("Seleccione explícitamente la regla de cumplimiento")
+    if (not np.isfinite(umbral_ms) or not 0 <= epsilon <= 1
+            or not np.isfinite(duracion_s) or duracion_s <= 0
+            or not np.isfinite(calentamiento_s) or calentamiento_s < 0):
+        raise ValueError("Umbral o tolerancia no válidos")
+    capacidades = list(servidores)
+    if not capacidades or any(int(c) != c or c < 1 for c in capacidades):
+        raise ValueError("Las capacidades deben ser enteros positivos")
+    if len(set(capacidades)) != len(capacidades):
+        raise ValueError("Las capacidades no pueden repetirse")
+    capacidades = sorted(int(c) for c in capacidades)
+    nombres = ("tasa_s", "prob_cache", "mu_log", "sigma_log", "red_media", "red_desv")
+    filas = []
+    for indice, escenario in enumerate(escenarios):
+        valores = [float(escenario[nombre]) for nombre in nombres]
+        tasa, cache, mu, sigma, red_mu, red_sd = valores
+        if (not np.all(np.isfinite(valores)) or tasa <= 0 or not 0 <= cache <= 1
+                or sigma <= 0 or red_sd <= 0):
+            raise ValueError(f"Escenario {indice}: parámetros no válidos")
+        media_gpu = np.exp(mu + sigma**2 / 2)
+        if not np.isfinite(media_gpu):
+            raise ValueError(f"Escenario {indice}: media lognormal no finita")
+        escenario_filas = []
+        for c in capacidades:
+            rho = tasa * (1 - cache) * media_gpu / (1000 * c)
+            fila = {"escenario": indice, "gpus": c, "rho": rho,
+                    "estable": bool(rho < 1), "violacion": np.nan,
+                    "ic_90_inferior": np.nan, "ic_90_superior": np.nan,
+                    "cumple": False}
+            if rho < 1:
+                proporciones = []
+                for _ in range(int(replicas)):
+                    latencias = np.asarray(simulador(
+                        rng, tasa, cache, mu, sigma, red_mu, red_sd,
+                        c, duracion_s, calentamiento_s), dtype=float)
+                    if not latencias.size or not np.all(np.isfinite(latencias)):
+                        raise ValueError("Simulación vacía o con latencias no finitas")
+                    proporciones.append(np.mean(latencias > umbral_ms))
+                media, inferior, superior = _intervalo_replicas(proporciones)
+                criterio = media if regla == "estimacion" else superior
+                fila.update(violacion=media, ic_90_inferior=inferior,
+                            ic_90_superior=superior, cumple=bool(criterio <= epsilon))
+            escenario_filas.append(fila)
+        elegibles = [f["gpus"] for f in escenario_filas if f["cumple"]]
+        c_optimo = min(elegibles) if elegibles else np.nan
+        for fila in escenario_filas:
+            fila["c_optimo_entre_capacidades_evaluadas"] = c_optimo
+        filas.extend(escenario_filas)
+    if not filas:
+        raise ValueError("Debe suministrar al menos un escenario")
+    return pd.DataFrame(filas)
+
+
+def generar_escenarios_g3(stable, rng, n_escenarios=200, duracion_estable=1030,
+                          crecimiento=1.5):
+    """Posteriores independientes de llegada, caché y parámetros lognormales."""
+    if not isinstance(rng, np.random.Generator):
+        raise TypeError("rng debe ser un numpy.random.Generator")
+    if n_escenarios < 1 or int(n_escenarios) != n_escenarios or duracion_estable <= 0 or crecimiento <= 0:
+        raise ValueError("Configuración de escenarios inválida")
+    if not set(stable.cache_hit.unique()).issubset({0, 1}):
+        raise ValueError("cache_hit debe ser binario")
+    n = len(stable)
+    k = int(stable.cache_hit.sum())
+    gpu = stable.loc[stable.cache_hit == 0, "gpu_ms"].to_numpy(dtype=float)
+    red = stable.red_ms.to_numpy(dtype=float)
+    if n < 2 or len(gpu) < 2 or np.any(gpu <= 0) or not np.isfinite(gpu).all() or not np.isfinite(red).all():
+        raise ValueError("Datos insuficientes o inválidos")
+    y = np.log(gpu)
+    media, s2 = y.mean(), y.var(ddof=1)
+    n_s = int(n_escenarios)
+    tasa = crecimiento * rng.gamma(n, 1 / duracion_estable, n_s)
+    cache = rng.beta(k + .5, n - k + .5, n_s)
+    sigma2 = (len(gpu) - 1) * s2 / rng.chisquare(len(gpu) - 1, n_s)
+    mu = rng.normal(media, np.sqrt(sigma2 / len(gpu)))
+    return pd.DataFrame(dict(tasa_s=tasa, prob_cache=cache, mu_log=mu,
+                             sigma_log=np.sqrt(sigma2), red_media=red.mean(),
+                             red_desv=red.std(ddof=1)))
+
+
+def mmc_cola_latencia(tasa, cache, mu, sigma, red_mu, red_sd, c, umbral=210):
+    """Cola total bajo M/M/c: caché/red independientes y servicio exponencial."""
+    if cache == 1:
+        return 0., float(stats.norm.sf((umbral-red_mu)/red_sd))
+    media_servicio = np.exp(mu + sigma**2 / 2)
+    rho, espera_prob, _ = mmc_espera(tasa * (1-cache), media_servicio, c)
+    if rho >= 1:
+        return rho, np.nan
+    a = 1 / media_servicio  # tasas en ms^-1
+    b = c * a - tasa * (1-cache) / 1000
+
+    def cola_gpu(x):
+        if x <= 0:
+            return 1.0
+        if np.isclose(a, b, rtol=1e-8):
+            suma = np.exp(-a*x) * (1 + a*x)
+        else:
+            suma = (b*np.exp(-a*x) - a*np.exp(-b*x)) / (b-a)
+        return (1-espera_prob)*np.exp(-a*x) + espera_prob*suma
+
+    # Integración sobre R normal; S y W son independientes de R.
+    z = (umbral-red_mu) / red_sd
+    # Acotar la integral al soporte numérico de la normal evita que QUADPACK
+    # omita toda la masa cuando z es muy grande (p. ej., z ≈ 39).
+    integral = 0.0
+    if z > -10:
+        integral = integrate.quad(
+            lambda u: stats.norm.pdf(u)*cola_gpu(umbral-red_mu-red_sd*u),
+            -10, min(z, 10), epsabs=1e-10)[0]
+    parte_no_cache = stats.norm.sf(z) + integral
+    return rho, cache*stats.norm.sf(z) + (1-cache)*parte_no_cache
+
+
+def ejecutar_g3(stable, seed=SEED, n_escenarios=200, replicas=5,
+                 duracion_s=400, calentamiento_s=20, capacidades=(2, 3, 4, 5),
+                 umbral_ms=210, epsilon=.01, crecimiento=1.5, guardar=True):
+    """Genera y evalúa escenarios; conserva fallos de la rejilla seleccionada."""
+    rng = np.random.default_rng(seed)
+    if duracion_s <= calentamiento_s:
+        raise ValueError("La duración total debe superar el calentamiento")
+    escenarios = generar_escenarios_g3(stable, rng, n_escenarios, 1030, crecimiento)
+    # simular_fifo recibe duración observada, no duración total.
+    detalles = evaluar_escenarios_g3(escenarios.to_dict("records"), capacidades, rng,
+                                      replicas, duracion_s - calentamiento_s, calentamiento_s,
+                                      umbral_ms, epsilon, "estimacion")
+    optimos = detalles.groupby("escenario").first().c_optimo_entre_capacidades_evaluadas
+    distribucion = pd.DataFrame({"capacidad": [*sorted(capacidades), "sin capacidad en la rejilla"]})
+    distribucion["escenarios"] = [int((optimos == c).sum()) for c in sorted(capacidades)] + [int(optimos.isna().sum())]
+    distribucion["proporcion"] = distribucion.escenarios / len(optimos)
+    resumen = detalles.groupby("gpus", as_index=False).agg(
+        prob_cumplimiento=("cumple", "mean"), escenarios=("cumple", "size"),
+        violacion_media=("violacion", "mean"), rho_media=("rho", "mean"))
+    comparacion = []
+    for c in sorted(capacidades):
+        values = [mmc_cola_latencia(e.tasa_s, e.prob_cache, e.mu_log, e.sigma_log,
+                                    e.red_media, e.red_desv, c, umbral_ms)[1]
+                  for e in escenarios.itertuples(index=False)]
+        valid = np.asarray(values)
+        comparacion.append({"gpus": c, "violacion_media_mmc": np.nanmean(valid),
+                            "prob_cumplimiento_mmc": np.mean(valid <= epsilon),
+                            "escenarios_inestables_mmc": int(np.isnan(valid).sum())})
+    resumen = resumen.merge(pd.DataFrame(comparacion), on="gpus")
+    # Intervalos Wilson al 90 % para el error de Monte Carlo entre escenarios.
+    for tabla, columna in ((distribucion, "escenarios"), (resumen, "prob_cumplimiento")):
+        if columna == "escenarios":
+            exitos = tabla.escenarios.to_numpy(dtype=int)
+        else:
+            exitos = np.rint(tabla.prob_cumplimiento.to_numpy() * n_escenarios).astype(int)
+        limites = [stats.binomtest(int(k), n_escenarios).proportion_ci(
+            confidence_level=.90, method="wilson") for k in exitos]
+        tabla["ic_mc_90_inferior"] = [v.low for v in limites]
+        tabla["ic_mc_90_superior"] = [v.high for v in limites]
+    if guardar:
+        out = ROOT / "outputs/G3"
+        out.mkdir(parents=True, exist_ok=True)
+        escenarios.to_csv(out / "escenarios_G3.csv", index_label="escenario")
+        detalles.to_csv(out / "detalle_escenarios_G3.csv", index=False)
+        distribucion.to_csv(out / "distribucion_capacidad_G3.csv", index=False)
+        resumen.to_csv(out / "robustez_c_G3.csv", index=False)
+    return escenarios, detalles, distribucion, resumen
 
 
 def main(seed=SEED):

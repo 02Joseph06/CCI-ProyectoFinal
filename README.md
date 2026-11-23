@@ -3,10 +3,12 @@
 Análisis reproducible de telemetría para el proyecto de Ciencia Computacional
 Intermedia. Las partes A, B, C y D están implementadas en el notebook
 [`notebooks/partes_A_B.ipynb`](notebooks/partes_A_B.ipynb).
-El mismo notebook incluye E, F y G1–G2, más un contraste parcial de G3 y un
-memorando G4 provisional. Las discrepancias y decisiones pendientes están en
-`documentos/calculos/discrepancias_pendientes.md` y deben resolverse antes de
-considerar definitivas las recomendaciones.
+El mismo notebook incluye E, F, los 200 escenarios de G3 solicitados por el
+grupo y un memorando G4 provisional. G3 usa cinco réplicas internas y un
+criterio puntual; G2 usa el límite superior de un intervalo. Las diferencias
+con los valores aportados, las limitaciones de G1 y la sensibilidad al modelo
+se documentan en `documentos/calculos/discrepancias_pendientes.md` y deben
+revisarse antes de considerar definitivas las recomendaciones.
 
 1. Cree un entorno Python e instale las dependencias con
    `python -m pip install -r requirements.txt`.
@@ -20,6 +22,11 @@ El notebook registra las identificaciones y la semilla del grupo; por ello el
 repositorio debe permanecer privado. Usa `np.random.default_rng(S)` como fuente
 de aleatoriedad. La documentación de trabajo de `documentos/` y `docs/` es
 local y está excluida de Git por decisión del grupo.
+La guía digital de deducciones está en
+`documentos/manuscrito/deducciones_B3_C1_D3_F5.md`; no sustituye la entrega
+manuscrita exigida por el enunciado.
+El informe de revisión en Word/PDF está en `outputs/informe/`; su fuente y la
+declaración de uso de IA para revisar y firmar están en `documentos/informe/`.
 
 La selección del régimen estable y las exclusiones aplicadas a la telemetría
 son supuestos de análisis. En particular, las tasas obtenidas después de

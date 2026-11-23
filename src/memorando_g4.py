@@ -34,8 +34,19 @@ def main():
     vpp = e2.loc["D1_y_D2", "vpp_produccion"]
     v6 = f6.loc["p_fallo_intento"]
     robustness = ROOT / "outputs/G3/robustez_c_G3.csv"
-    status = "Hay salida de robustez; debe revisarse su método." if robustness.exists() else (
-        "La propagación G3 y la recomendación final están pendientes de las decisiones del grupo.")
+    distribution = ROOT / "outputs/G3/distribucion_capacidad_G3.csv"
+    if robustness.exists() and distribution.exists():
+        g3 = pd.read_csv(robustness).set_index("gpus")
+        dist = pd.read_csv(distribution).set_index("capacidad")
+        p3 = float(dist.loc["3", "proporcion"])
+        p4 = float(dist.loc["4", "proporcion"])
+        p5 = float(dist.loc["5", "proporcion"])
+        status = (f"En G3, la capacidad mínima fue 3/4/5 GPU en {p3:.1%}/{p4:.1%}/{p5:.1%} "
+                  f"de los escenarios; con 4 GPU el cumplimiento individual fue {g3.loc[4, 'prob_cumplimiento']:.1%}. "
+                  f"El contraste M/M/c estima {g3.loc[4, 'violacion_media_mmc']:.2%} de violaciones con 4 GPU. "
+                  "G3 usa el criterio puntual, cinco réplicas internas y posterior del modelo; G2 usa el límite superior del IC.")
+    else:
+        status = "La propagación G3 y la recomendación final están pendientes de las decisiones del grupo."
 
     paragraphs = [
         ("MEMORANDO EJECUTIVO — BORRADOR PARA REVISIÓN", True),
@@ -63,11 +74,13 @@ def main():
          "los intervalos de G2 miden error de simulación con parámetros fijos.", False),
         (f"Para D1 y D2, E estima {incident.media_falsas_diarias:.2f} falsas alarmas/día y "
          f"{vpp:.1%} de probabilidad de incidente por alerta en producción, bajo transportabilidad de tasas. "
-         "La distribución diaria supone minutos independientes y tasa constante.", False),
+         f"La probabilidad puntual de no superar 8 falsas alarmas es {incident.prob_hasta_k:.2%}; "
+         f"con FPR en el extremo superior Wilson es {incident.prob_hasta_k_con_fpr_ic_sup:.2%}. "
+         "Se suponen minutos independientes y tasa constante.", False),
         (status + " El significado de los reintentos en la tasa observada sigue sin comprobarse.", False),
     ]
     lines = ["# " + paragraphs[0][0], "", *[p for p, _ in paragraphs[1:]], "",
-             "Fuentes: salidas reproducibles B, C1, E2, E4, F2, F3, F6 y G1–G2; ver `documentos/calculos/discrepancias_pendientes.md`. ",
+             "Fuentes: salidas reproducibles B, C1, E2, E4, F2, F3, F6 y G1–G3; ver `documentos/calculos/discrepancias_pendientes.md`. ",
              "Las cifras propuestas por el grupo están conservadas en `documentos/G4/memorando_aportado_por_el_grupo.md`."]
     OUT.mkdir(parents=True, exist_ok=True)
     md = "\n\n".join(lines) + "\n"

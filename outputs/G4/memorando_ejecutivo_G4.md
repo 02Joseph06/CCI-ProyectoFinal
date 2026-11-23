@@ -22,12 +22,12 @@ GPU sin caché: +0.530 ms; IC conjunto 90 % [-0.767; 1.828] ms. Reintentos: +0.6
 
 Con el tráfico multiplicado por 1,5, G2 estima violaciones de 3.07%, 1.02% y 0.91% para 2, 3 y 4 GPU. En G1 la cola simulada (1.36%) difiere de la observada (1.14%); los intervalos de G2 miden error de simulación con parámetros fijos.
 
-Para D1 y D2, E estima 2.41 falsas alarmas/día y 73.1% de probabilidad de incidente por alerta en producción, bajo transportabilidad de tasas. La distribución diaria supone minutos independientes y tasa constante.
+Para D1 y D2, E estima 2.41 falsas alarmas/día y 73.1% de probabilidad de incidente por alerta en producción, bajo transportabilidad de tasas. La probabilidad puntual de no superar 8 falsas alarmas es 99.91%; con FPR en el extremo superior Wilson es 97.43%. Se suponen minutos independientes y tasa constante.
 
-La propagación G3 y la recomendación final están pendientes de las decisiones del grupo. El significado de los reintentos en la tasa observada sigue sin comprobarse.
+En G3, la capacidad mínima fue 3/4/5 GPU en 40.5%/57.5%/2.0% de los escenarios; con 4 GPU el cumplimiento individual fue 97.5%. El contraste M/M/c estima 2.08% de violaciones con 4 GPU. G3 usa el criterio puntual, cinco réplicas internas y posterior del modelo; G2 usa el límite superior del IC. El significado de los reintentos en la tasa observada sigue sin comprobarse.
 
 
 
-Fuentes: salidas reproducibles B, C1, E2, E4, F2, F3, F6 y G1–G2; ver `documentos/calculos/discrepancias_pendientes.md`. 
+Fuentes: salidas reproducibles B, C1, E2, E4, F2, F3, F6 y G1–G3; ver `documentos/calculos/discrepancias_pendientes.md`. 
 
 Las cifras propuestas por el grupo están conservadas en `documentos/G4/memorando_aportado_por_el_grupo.md`.

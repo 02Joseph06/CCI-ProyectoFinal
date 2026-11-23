@@ -39,17 +39,37 @@ def f1(df, rng, replicas=20000):
             medias.extend(a.mean(axis=1)); stds.extend(a.std(axis=1, ddof=1))
         medias, stds = np.asarray(medias), np.asarray(stds)
         coverage = np.mean(np.abs(medias-mu) <= z*stds/np.sqrt(n))
+        fixed_coverage = np.mean(np.abs(medias-mu) <= z*x.std(ddof=0)/np.sqrt(n))
+        # Intervalo Wilson del error de simulación, no intervalo de la media.
+        mc_lo, mc_hi = wilson(int(round(coverage * replicas)), replicas, z)
         resultados.append({'n':n,'replicas':replicas,'media_poblacion_ms':mu,
                            'media_de_medias_ms':medias.mean(), 'desviacion_ms':medias.std(ddof=1),
                            'asimetria':stats.skew(medias,bias=False),
                            'exceso_curtosis':stats.kurtosis(medias,bias=False),
                            'cobertura_ic_normal_z_con_s_muestral':coverage,
-                           'cobertura_ic_normal_z_con_sigma_empirica':np.mean(np.abs(medias-mu) <= z*x.std(ddof=0)/np.sqrt(n)),
+                           'error_mc_cobertura_con_s_muestral':np.sqrt(coverage*(1-coverage)/replicas),
+                           'ic90_mc_cobertura_inferior':mc_lo,
+                           'ic90_mc_cobertura_superior':mc_hi,
+                           'cobertura_ic_normal_z_con_sigma_empirica':fixed_coverage,
+                           'error_mc_cobertura_con_sigma_empirica':np.sqrt(fixed_coverage*(1-fixed_coverage)/replicas),
                            'umbral_cobertura':.89})
-        ax.hist(medias, bins=50, density=True, alpha=.7)
+        ax.hist(medias, bins=50, density=True, alpha=.7, label='Media muestral')
         ax.set(title=f'n = {n}', xlabel='Media de latencia (ms)', ylabel='Densidad (1/ms)')
+        ax.legend()
+    # La decisión solicitada usa s de cada réplica; sigma fija se conserva
+    # únicamente como análisis de sensibilidad. Es una estimación Monte Carlo.
+    candidatos = [r['n'] for r in resultados if r['cobertura_ic_normal_z_con_s_muestral'] >= .89]
+    menor_n = min(candidatos) if candidatos else np.nan
+    for resultado in resultados:
+        resultado['criterio_principal'] = 'normal z con s de cada réplica'
+        resultado['menor_n_evaluado_cobertura_al_menos_089'] = menor_n
     fig.suptitle('Figura 7. Distribución muestral empírica de la media'); fig.tight_layout()
     folder=guardar(pd.DataFrame(resultados),'F1','distribucion_muestral_F1.csv')
+    pd.DataFrame([{'criterio':'cobertura estimada >= 0.89; z con s por réplica',
+                   'n_minimo_en_rejilla':menor_n, 'rejilla':'5, 30, 200, 2000',
+                   'replicas_por_n':replicas,
+                   'advertencia':'La selección usa la estimación puntual; revisar IC Monte Carlo.'}]
+                ).to_csv(folder/'resumen_cobertura_F1.csv',index=False)
     fig.savefig(folder/'figura_7_tcl_latencia.png',dpi=160); plt.close(fig)
 
 
@@ -86,17 +106,23 @@ def f3(df):
                            ('violación SLO >210 ms',(a.latencia_ms>TAU).to_numpy(dtype=float),(b.latencia_ms>TAU).to_numpy(dtype=float)) ]:
         na,nb=len(aa),len(bb); va=aa.var(ddof=1)/na; vb=bb.var(ddof=1)/nb
         se=np.sqrt(va+vb); dof=(va+vb)**2/(va**2/(na-1)+vb**2/(nb-1))
-        d=bb.mean()-aa.mean(); critical=stats.t.ppf(1-ALPHA/(2*3),dof)
+        # El grupo escogió críticos normales para los intervalos. Se mantiene
+        # el contraste t de Welch como prueba nominal separada de los IC.
+        d=bb.mean()-aa.mean(); critical=stats.norm.ppf(1-ALPHA/(2*3))
+        critical_individual=stats.norm.ppf(1-ALPHA/2)
         out.append({'metrica':metric,'n_A':na,'n_B':nb,'media_A':aa.mean(),'media_B':bb.mean(),'diferencia_B_menos_A':d,
                     'ic_bonferroni_inferior':d-critical*se,'ic_bonferroni_superior':d+critical*se,
-                    'ic_individual_inferior':d-stats.t.ppf(.95,dof)*se,'ic_individual_superior':d+stats.t.ppf(.95,dof)*se,
-                    'nivel_conjunto_minimo':.9,'p_sin_ajustar':2*stats.t.sf(abs(d/se),dof),'metodo':'Welch con Bonferroni'})
+                    'ic_individual_inferior':d-critical_individual*se,'ic_individual_superior':d+critical_individual*se,
+                    'nivel_conjunto_minimo':.9,'p_sin_ajustar':2*stats.t.sf(abs(d/se),dof),
+                    'metodo':'IC normal z con Bonferroni; p nominal t de Welch',
+                    'error_estandar':se,'gl_welch':dof,'critico_z_bonferroni':critical,
+                    'critico_z_individual':critical_individual})
     folder=guardar(pd.DataFrame(out),'F3','comparacion_AB_F3.csv')
     balance=[]
     for var in ['tam_kb','cache_hit']:
         x=a[var].dropna(); y=b[var].dropna(); test=stats.ttest_ind(x,y,equal_var=False)
         balance.append({'variable':var,'n_A':len(x),'n_B':len(y),'media_A':x.mean(),'media_B':y.mean(),'diferencia_B_A':y.mean()-x.mean(),'p_nominal_Welch':test.pvalue})
-    # Balance adicional: KS de dos muestras para tama?o y chi-cuadrado para cach?.
+    # Balance adicional: KS de dos muestras para tamaño y chi-cuadrado para caché.
     ks=stats.ks_2samp(a.tam_kb.dropna(),b.tam_kb.dropna())
     table=pd.crosstab(df.version,df.cache_hit).reindex(index=['A','B'],columns=[0,1],fill_value=0)
     if (table.sum(axis=0)==0).any() or (table.sum(axis=1)==0).any():

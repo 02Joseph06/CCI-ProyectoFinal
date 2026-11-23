@@ -34,7 +34,8 @@ class MemorandoTest(unittest.TestCase):
                 for name in ("GPU sin caché (ms)", "reintento (>1)", "violación SLO >210 ms")])
             table("F6", "comparacion_validacion_F6.csv", [{"parametro":"p_fallo_intento", "base":.15, "validacion":.2}])
             table("E2", "bayes_E2.csv", [{"regla":"D1_y_D2", "vpp_produccion":.7}])
-            table("E4", "decision_guardia_E4.csv", [{"regla":"D1_y_D2", "media_falsas_diarias":2.4}])
+            table("E4", "decision_guardia_E4.csv", [{"regla":"D1_y_D2", "media_falsas_diarias":2.4,
+                "prob_hasta_k":.999121, "prob_hasta_k_con_fpr_ic_sup":.974309}])
             table("G1", "validacion_simulador_G1.csv", [{"metrica":"proporcion_mayor_210_ms", "observado":.011, "simulado":.014}])
             table("G2", "capacidad_proyeccion_G2.csv", [{"gpus":c, "violacion":p} for c,p in ((2,.03),(3,.01),(4,.009))])
             with patch.object(memorando_g4, "ROOT", root), \
