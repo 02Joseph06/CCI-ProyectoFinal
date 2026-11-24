@@ -1,5 +1,5 @@
 # Documentación y cálculos de trabajo locales
-/documentos/
+
 /docs/
 .venv/
 __pycache__/
