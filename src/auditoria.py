@@ -99,6 +99,7 @@ def audit():
             invalidate("intentos", "abandono antes de tres intentos")
         # Tres mediciones redondeadas a centésimas pueden acumular hasta 0,015 ms de error.
         if all(row[c] for c in ("red_ms", "gpu_ms", "latencia_ms")):
+            # Wq >= 0: this checks the physical lower bound L >= red + G, not equality.
             if float(row["latencia_ms"]) + 0.015001 < float(row["red_ms"]) + float(row["gpu_ms"]):
                 invalidate("latencia_ms", "inferior a red más GPU, fuera del redondeo")
         row["motivos_auditoria"] = " | ".join(reasons)

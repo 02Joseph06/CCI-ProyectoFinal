@@ -1,6 +1,6 @@
 # Actualización vigente — S = 2279892322
 
-Gamma k=2.52566, θ=21.09866; lognormal μ=3.76487, σ=0.65929; KS descriptivos 0.03976 y 0.01072.
+Gamma: $k=2,52566$, $\theta=21,09866$ ms, $D_{KS}=0,03976$; lognormal: $\mu=3,76487$, $\sigma=0,65929$, $D_{KS}=0,01072$. Las distancias KS son descriptivas.
 
 Fuente: ../../outputs/C2/. Confianza 95 %.
 

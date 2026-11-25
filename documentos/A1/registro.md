@@ -1,6 +1,6 @@
 # Actualización vigente — S = 2279892322
 
-34.072 filas originales, 101 duplicados tras conversión y 33.737 filas válidas; tolerancia física 0,015001 ms.
+34.072 filas originales, 101 duplicados tras conversión y 33.737 filas válidas; tolerancia física 0,015001 ms. Para solicitudes no cacheadas, $L=T_{\mathrm{red}}+T_{\mathrm{cola}}+G$ con $T_{\mathrm{cola}}\ge0$; para cache hits, $G=0$. La auditoría no observa la cola ni exige igualdad: verifica solo la cota $L+0,015001\ge T_{\mathrm{red}}+G$, contemplando el redondeo de las tres mediciones a centésimas de milisegundo.
 
 Fuente: ../../outputs/A1/. Confianza 95 %.
 

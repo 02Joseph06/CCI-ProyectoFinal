@@ -23,6 +23,6 @@ Después abre el notebook modular y ejecuta todas sus celdas. Las salidas se gen
 
 ## Alcance de los resultados
 
-El modelo principal selecciona 3 GPU bajo los supuestos documentados; el contraste M/M/c no cumple el mismo SLO con esa capacidad. En E4, la regla conjunta cumple el criterio puntual, pero no al usar el extremo superior conservador del intervalo de falsos positivos. Ambos resultados requieren interpretación del grupo y no son garantías operativas.
+En G2, 3 GPU producen una violación estimada de 1,5776 % (IC 95 %: [1,5441 %; 1,6111 %]), inferior a epsilon=2 % bajo el modelo FIFO con servicio lognormal. En G3, las 3 GPU cumplen el criterio puntual en los 200 escenarios evaluados. El contraste M/M/c, que supone servicio exponencial, estima 3,38 % de violaciones con 3 GPU y no cumple el mismo SLO. La diferencia depende de los supuestos del modelo y no es una garantía operativa. En E4, la regla conjunta cumple el criterio puntual, pero no al usar el extremo superior conservador del intervalo de falsos positivos.
 
 El informe y la declaración de IA son borradores para revisión; las deducciones manuscritas deben prepararse y verificarse por el grupo. Por decisión del grupo, `.gitignore` excluye `docs/` y `documentos/`; conserva el repositorio privado por los datos y las identificaciones del grupo.
