@@ -1,6 +1,7 @@
 # Documentación y cálculos de trabajo locales
 
 /docs/
+/documentos/
 .venv/
 __pycache__/
 .ipynb_checkpoints/

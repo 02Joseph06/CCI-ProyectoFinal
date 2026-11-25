@@ -1,9 +1,26 @@
+# Bitácora de decisiones vigente
+
+| Fecha | Punto | Decisión | Alternativa o limitación |
+|---|---|---|---|
+| 2026-11-25 | Parámetros | C1=1137978133, C2=1141914189; S=2279892322, confianza 95 %. El grupo confirmó que los CSV corresponden. | Las salidas con la semilla anterior son históricas. |
+| 2026-11-25 | A1 | Convertir tamaños >5000 de bytes a KB antes de deduplicar; tolerancia física 0,015001 ms. | La comparación estricta descartaría diferencias compatibles con redondeo. |
+| 2026-11-25 | A2 y B | Mantener los tramos [0,668) y [838,1200] s y calcular intervalos por tramo. | La ausencia de rechazo no demuestra estacionariedad. |
+| 2026-11-25 | C | FDA mixta; ajuste Gamma y lognormal por BFGS; C4 con N=14 y remuestreo i.i.d. | El ajuste marginal no incorpora explícitamente tamaño ni dependencia temporal. |
+| 2026-11-25 | D | Clases con límites 100 y 450 KB; varianza empírica con divisor n; WLS con pesos 1/tamaño² y HC3. | Los pesos son un supuesto y no eliminan todas las fuentes de sesgo o dependencia. |
+| 2026-11-25 | E | Wilson 95 %, prevalencia 0,008 y kₘáx=6; propagar extremo superior de FPR. | D1 y D2 cumple puntualmente, pero no con el extremo conservador; decidir con el responsable de guardia. |
+| 2026-11-25 | F | IC al 95 %, Bonferroni para tres métricas y bootstrap por bloques de 20 por tramo. | La falta de diferencia significativa no demuestra equivalencia. |
+| 2026-11-25 | G | Simulación FIFO y 200 escenarios; τ=190 ms y ε=0,02; contrastar con M/M/c. | Tres GPU cumplen en el modelo principal, pero M/M/c y la discrepancia G1 limitan la recomendación. |
+
+Las fórmulas, cálculos y referencias se encuentran en [los registros vigentes](formulas_C_D.md) y en las tablas de `outputs/`. Las deducciones manuscritas y la declaración de IA requieren revisión y firma del grupo.
+
+## Registro histórico — semilla anterior
+
 # Bitácora de decisiones
 
 Decisiones comunicadas por el estudiante y aplicadas al proyecto. Las fechas
 indican cuándo se registraron en esta bitácora; las referencias matemáticas y
 verificaciones detalladas están en `formulas_C_D.md` y en
-`../documentos/calculso/actualizacion_A_B.md`.
+`actualizacion_A_B.md`.
 
 | Fecha | Punto | Decisión del grupo | Alternativa o limitación registrada |
 |---|---|---|---|

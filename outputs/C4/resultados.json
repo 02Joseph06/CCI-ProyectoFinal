@@ -1,16 +1,17 @@
 {
-  "N": 16,
+  "N": 14,
   "n_positivos": 14696,
   "media_ms": 53.288025993467606,
   "var_muestral_ms2": 1365.9172436362076,
-  "umbral_ms": 1092.6084158954818,
-  "prob_normal": 0.05224656629413653,
-  "prob_gamma": 0.04494678957869444,
-  "prob_remuestreo_iid": 0.063425,
+  "umbral_ms": 956.0323639085466,
+  "prob_normal": 0.0644317431811611,
+  "prob_gamma": 0.05554759821162733,
+  "prob_remuestreo_iid": 0.075375,
   "replicas": 200000,
-  "IC_monte_carlo_90": [
-    0.06253075333640754,
-    0.06432860926314318
+  "nivel_confianza": 0.95,
+  "IC_monte_carlo": [
+    0.07422166994532037,
+    0.07654065511724649
   ],
   "nota": "El remuestreo i.i.d. usa la distribución empírica; no preserva dependencia temporal ni prueba que sea la distribución poblacional."
 }

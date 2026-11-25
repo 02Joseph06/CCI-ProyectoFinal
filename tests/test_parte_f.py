@@ -32,10 +32,10 @@ class TestParteF(unittest.TestCase):
                 coverage=out[f'cobertura_ic_normal_z_con_{suffix}']
                 error=out[f'error_mc_cobertura_con_{suffix}']
                 self.assertTrue(np.allclose(error,np.sqrt(coverage*(1-coverage)/100)))
-            self.assertTrue((out.ic90_mc_cobertura_inferior <= out.cobertura_ic_normal_z_con_s_muestral).all())
-            self.assertTrue((out.cobertura_ic_normal_z_con_s_muestral <= out.ic90_mc_cobertura_superior).all())
+            self.assertTrue((out.ic_mc_cobertura_inferior <= out.cobertura_ic_normal_z_con_s_muestral).all())
+            self.assertTrue((out.cobertura_ic_normal_z_con_s_muestral <= out.ic_mc_cobertura_superior).all())
             resumen=pd.read_csv(Path(td)/'outputs/F1/resumen_cobertura_F1.csv').iloc[0]
-            candidatos=out.loc[out.cobertura_ic_normal_z_con_s_muestral >= .89, 'n']
+            candidatos=out.loc[out.cobertura_ic_normal_z_con_s_muestral >= parte_f.CONFIANZA-.01, 'n']
             if not candidatos.empty:
                 self.assertEqual(resumen.n_minimo_en_rejilla,candidatos.min())
 
@@ -48,15 +48,15 @@ class TestParteF(unittest.TestCase):
                 parte_f.f3(df)
             out=pd.read_csv(Path(td)/'outputs/F3/comparacion_AB_F3.csv')
             self.assertEqual(len(out),3)
-            self.assertTrue(np.allclose(out.nivel_conjunto_minimo,.9))
+            self.assertTrue(np.allclose(out.nivel_conjunto_minimo,parte_f.CONFIANZA))
             self.assertTrue(np.all(out.ic_bonferroni_inferior<=out.diferencia_B_menos_A))
             self.assertTrue(np.all(out.diferencia_B_menos_A<=out.ic_bonferroni_superior))
             self.assertTrue(np.allclose(
                 out.ic_bonferroni_superior-out.diferencia_B_menos_A,
-                stats.norm.ppf(1-.1/6)*out.error_estandar))
+                stats.norm.ppf(1-parte_f.ALPHA/6)*out.error_estandar))
             self.assertTrue(np.allclose(
                 out.ic_individual_superior-out.diferencia_B_menos_A,
-                stats.norm.ppf(.95)*out.error_estandar))
+                stats.norm.ppf(1-parte_f.ALPHA/2)*out.error_estandar))
             self.assertTrue(out.metodo.str.contains('Welch').all())
 
 if __name__=='__main__': unittest.main()

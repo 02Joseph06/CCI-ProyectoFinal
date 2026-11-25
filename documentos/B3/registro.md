@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+q̂=F/A=0.153304; perfil 95 % [0.14921; 0.15746]; deducción manuscrita del grupo pendiente de verificar.
+
+Fuente: ../../outputs/B/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # B3: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ### B3. Intentos y verosimilitud
 

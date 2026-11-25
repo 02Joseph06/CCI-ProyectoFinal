@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+OLS β=[15.099850275109008, 0.14526892246466697]; WLS β=[14.948770574566511, 0.1447036754760385]; críticos t e intervalos al 95 % en ../../outputs/D3/intervalos_coeficientes.csv.
+
+Fuente: ../../outputs/D3/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # D3: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## D3 — Regresión y corrección de residuos
 

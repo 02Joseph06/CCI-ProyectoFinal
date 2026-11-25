@@ -4,14 +4,12 @@ import tempfile
 import numpy as np
 import pandas as pd
 from scipy import stats
+from parametros import S as SEED, ALPHA, CONFIANZA, TAU_MS as TAU, R
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]
-SEED = 2046185499
-ALPHA = .1
-TAU = 210
 
 
 def guardar(df, punto, nombre):
@@ -30,7 +28,7 @@ def estable(df):
 
 def f1(df, rng, replicas=20000):
     x = df.latencia_ms.to_numpy(); mu = x.mean(); resultados = []
-    z = stats.norm.ppf(.95)
+    z = stats.norm.ppf(1 - ALPHA/2)
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     for ax, n in zip(axes.flat, (5, 30, 200, 2000)):
         medias, stds = [], []
@@ -48,24 +46,25 @@ def f1(df, rng, replicas=20000):
                            'exceso_curtosis':stats.kurtosis(medias,bias=False),
                            'cobertura_ic_normal_z_con_s_muestral':coverage,
                            'error_mc_cobertura_con_s_muestral':np.sqrt(coverage*(1-coverage)/replicas),
-                           'ic90_mc_cobertura_inferior':mc_lo,
-                           'ic90_mc_cobertura_superior':mc_hi,
+                           'ic_mc_cobertura_inferior':mc_lo,
+                           'ic_mc_cobertura_superior':mc_hi,
+                           'nivel_confianza_mc':CONFIANZA,
                            'cobertura_ic_normal_z_con_sigma_empirica':fixed_coverage,
                            'error_mc_cobertura_con_sigma_empirica':np.sqrt(fixed_coverage*(1-fixed_coverage)/replicas),
-                           'umbral_cobertura':.89})
+                           'umbral_cobertura':CONFIANZA-.01})
         ax.hist(medias, bins=50, density=True, alpha=.7, label='Media muestral')
         ax.set(title=f'n = {n}', xlabel='Media de latencia (ms)', ylabel='Densidad (1/ms)')
         ax.legend()
     # La decisión solicitada usa s de cada réplica; sigma fija se conserva
     # únicamente como análisis de sensibilidad. Es una estimación Monte Carlo.
-    candidatos = [r['n'] for r in resultados if r['cobertura_ic_normal_z_con_s_muestral'] >= .89]
+    candidatos = [r['n'] for r in resultados if r['cobertura_ic_normal_z_con_s_muestral'] >= CONFIANZA-.01]
     menor_n = min(candidatos) if candidatos else np.nan
     for resultado in resultados:
         resultado['criterio_principal'] = 'normal z con s de cada réplica'
-        resultado['menor_n_evaluado_cobertura_al_menos_089'] = menor_n
+        resultado['menor_n_evaluado'] = menor_n
     fig.suptitle('Figura 7. Distribución muestral empírica de la media'); fig.tight_layout()
     folder=guardar(pd.DataFrame(resultados),'F1','distribucion_muestral_F1.csv')
-    pd.DataFrame([{'criterio':'cobertura estimada >= 0.89; z con s por réplica',
+    pd.DataFrame([{'criterio':f'cobertura estimada >= {CONFIANZA-.01:.2f}; z con s por réplica',
                    'n_minimo_en_rejilla':menor_n, 'rejilla':'5, 30, 200, 2000',
                    'replicas_por_n':replicas,
                    'advertencia':'La selección usa la estimación puntual; revisar IC Monte Carlo.'}]
@@ -75,7 +74,7 @@ def f1(df, rng, replicas=20000):
 
 def f2(partes, rng, replicas=20000, longitud=20):
     xs = [p.latencia_ms.to_numpy() for p in partes]; x = np.concatenate(xs)
-    m=x.mean(); se=x.std(ddof=1)/np.sqrt(len(x)); t=stats.t.ppf(.95,len(x)-1)
+    m=x.mean(); se=x.std(ddof=1)/np.sqrt(len(x)); t=stats.t.ppf(1-ALPHA/2,len(x)-1)
     sims=np.empty(replicas)
     # Los bloques no cruzan el incidente; cada tramo conserva su tamaño original.
     for k in range(replicas):
@@ -85,9 +84,9 @@ def f2(partes, rng, replicas=20000, longitud=20):
             indices=(starts[:,None]+np.arange(longitud)).ravel()[:len(v)]
             total += v[indices].sum()
         sims[k]=total/len(x)
-    lo,hi=np.quantile(sims,[.05,.95])
-    guardar(pd.DataFrame([{'metodo':'t clásico','estimacion_ms':m,'inferior_ms':m-t*se,'superior_ms':m+t*se,'nivel':.9,'replicas':0,'longitud_bloque':0},
-        {'metodo':'percentiles bootstrap de bloques móviles por tramo','estimacion_ms':m,'inferior_ms':lo,'superior_ms':hi,'nivel':.9,'replicas':replicas,'longitud_bloque':longitud}]),'F2','ic_latencia_F2.csv')
+    lo,hi=np.quantile(sims,[ALPHA/2,1-ALPHA/2])
+    guardar(pd.DataFrame([{'metodo':'t clásico','estimacion_ms':m,'inferior_ms':m-t*se,'superior_ms':m+t*se,'nivel':CONFIANZA,'replicas':0,'longitud_bloque':0},
+        {'metodo':'percentiles bootstrap de bloques móviles por tramo','estimacion_ms':m,'inferior_ms':lo,'superior_ms':hi,'nivel':CONFIANZA,'replicas':replicas,'longitud_bloque':longitud}]),'F2','ic_latencia_F2.csv')
 
 
     autocorrelaciones=[]
@@ -100,10 +99,10 @@ def f2(partes, rng, replicas=20000, longitud=20):
 
 def f3(df):
     a=df[df.version=='A']; b=df[df.version=='B']; out=[]
-    # Bonferroni garantiza cobertura conjunta >= 90 % para las tres comparaciones.
+    # Bonferroni ajusta las tres comparaciones al nivel conjunto elegido.
     for metric, aa, bb in [ ('GPU sin caché (ms)',a.loc[a.cache_hit==0,'gpu_ms'].to_numpy(),b.loc[b.cache_hit==0,'gpu_ms'].to_numpy()),
                            ('reintento (>1)',(a.intentos>1).to_numpy(dtype=float),(b.intentos>1).to_numpy(dtype=float)),
-                           ('violación SLO >210 ms',(a.latencia_ms>TAU).to_numpy(dtype=float),(b.latencia_ms>TAU).to_numpy(dtype=float)) ]:
+                           (f'violación SLO >{TAU} ms',(a.latencia_ms>TAU).to_numpy(dtype=float),(b.latencia_ms>TAU).to_numpy(dtype=float)) ]:
         na,nb=len(aa),len(bb); va=aa.var(ddof=1)/na; vb=bb.var(ddof=1)/nb
         se=np.sqrt(va+vb); dof=(va+vb)**2/(va**2/(na-1)+vb**2/(nb-1))
         # El grupo escogió críticos normales para los intervalos. Se mantiene
@@ -113,7 +112,7 @@ def f3(df):
         out.append({'metrica':metric,'n_A':na,'n_B':nb,'media_A':aa.mean(),'media_B':bb.mean(),'diferencia_B_menos_A':d,
                     'ic_bonferroni_inferior':d-critical*se,'ic_bonferroni_superior':d+critical*se,
                     'ic_individual_inferior':d-critical_individual*se,'ic_individual_superior':d+critical_individual*se,
-                    'nivel_conjunto_minimo':.9,'p_sin_ajustar':2*stats.t.sf(abs(d/se),dof),
+                    'nivel_conjunto_minimo':CONFIANZA,'p_sin_ajustar':2*stats.t.sf(abs(d/se),dof),
                     'metodo':'IC normal z con Bonferroni; p nominal t de Welch',
                     'error_estandar':se,'gl_welch':dof,'critico_z_bonferroni':critical,
                     'critico_z_individual':critical_individual})
@@ -146,7 +145,7 @@ def wilson(k,n,z):
 
 
 def f4(rng,replicas=10000):
-    z=stats.norm.ppf(.95); out=[]
+    z=stats.norm.ppf(1-ALPHA/2); out=[]
     for n in (20,50,200,1000):
         for p in (.01,.05,.15,.5):
             k=rng.binomial(n,p,size=replicas); ph=k/n; error=z*np.sqrt(ph*(1-ph)/n)
@@ -158,14 +157,14 @@ def f4(rng,replicas=10000):
                 else:
                     exact_lo,exact_hi=wilson(counts,n,z)
                 exact_coverage=stats.binom.pmf(counts[(exact_lo<=p)&(p<=exact_hi)],n,p).sum()
-                out.append({'n':n,'p_real':p,'metodo':name,'replicas':replicas,'cobertura':covered,'nivel_nominal':.9,
+                out.append({'n':n,'p_real':p,'metodo':name,'replicas':replicas,'cobertura':covered,'nivel_nominal':CONFIANZA,
                             'error_mc':np.sqrt(covered*(1-covered)/replicas),'cobertura_binomial_exacta':exact_coverage})
     data=pd.DataFrame(out); folder=guardar(data,'F4','cobertura_wald_wilson_F4.csv')
     fig,axs=plt.subplots(1,4,figsize=(15,3.8),sharey=True)
     for ax,p in zip(axs,(.01,.05,.15,.5)):
         for metodo,g in data[data.p_real==p].groupby('metodo'):
             ax.plot(g.n,g.cobertura,marker='o',label=metodo)
-        ax.axhline(.9,linestyle='--',color='black',label='Nominal 90 %'); ax.set(xscale='log',title=f'p = {p}',xlabel='Tamaño muestral n',ylabel='Cobertura')
+        ax.axhline(CONFIANZA,linestyle='--',color='black',label=f'Nominal {CONFIANZA:.0%}'); ax.set(xscale='log',title=f'p = {p}',xlabel='Tamaño muestral n',ylabel='Cobertura')
         ax.legend()
     fig.suptitle('Figura 8. Cobertura simulada de intervalos de proporción');fig.tight_layout();fig.savefig(folder/'figura_8_cobertura_proporciones.png',dpi=160);plt.close(fig)
 
@@ -174,7 +173,7 @@ def f5(df,rng,replicas=1000):
     a=df[(df.version=='A') & (df.cache_hit==0)].gpu_ms.to_numpy()
     b=df[(df.version=='B') & (df.cache_hit==0)].gpu_ms.to_numpy(); varsum=a.var(ddof=1)+b.var(ddof=1)
     out=[]
-    for name,q in [('individual',stats.norm.ppf(.95)),('Bonferroni 3 métricas',stats.norm.ppf(1-.1/6))]:
+    for name,q in [('individual',stats.norm.ppf(1-ALPHA/2)),('Bonferroni 3 métricas',stats.norm.ppf(1-ALPHA/6))]:
         n=int(np.ceil(q*q*varsum)); means=[]; half=[]
         for _ in range(replicas):
             aa=rng.choice(a,size=n); bb=rng.choice(b,size=n)
@@ -216,7 +215,7 @@ def f6(df):
     # Intervalos separados para los indicadores de C/F. Que una estimación
     # caiga dentro de un IC anterior no demuestra igualdad ni estacionariedad.
     comparison=[]
-    z=stats.norm.ppf(.95)
+    z=stats.norm.ppf(1-ALPHA/2)
     for label, column, kind, only_gpu in [
         ('caché','cache_hit','proporcion',False),
         ('GPU no cacheada (ms)','gpu_ms','media',True),
@@ -229,11 +228,11 @@ def f6(df):
         if kind in ('slo','proporcion'):
             lo,hi=wilson(x.sum(),len(x),z)
         else:
-            se=x.std(ddof=1)/np.sqrt(len(x)); q=stats.t.ppf(.95,len(x)-1)
+            se=x.std(ddof=1)/np.sqrt(len(x)); q=stats.t.ppf(1-ALPHA/2,len(x)-1)
             lo,hi=x.mean()-q*se,x.mean()+q*se
         comparison.append({'parametro':label,'metodo_ic_base':'Wilson' if kind!='media' else 't clásico',
                            'n_base':len(x),'n_validacion':len(y),'base':x.mean(),'validacion':y.mean(),
-                           'ic_base_inferior':lo,'ic_base_superior':hi,'nivel':.9})
+                           'ic_base_inferior':lo,'ic_base_superior':hi,'nivel':CONFIANZA})
     pd.DataFrame(comparison).to_csv(folder/'comparacion_intervalos_C_F_F6.csv',index=False)
     from regimenes import segmentar
     segments=[]
@@ -254,7 +253,7 @@ def f6(df):
             retry=(part.intentos.to_numpy()>1).astype(int); m=len(retry)//100
             if m: blocks.extend(retry[:100*m].reshape(m,100).sum(axis=1))
         rate=len(combined)/duration; pretry=(combined.intentos>1).mean()
-        mu=10*rate*pretry; k=int(np.ceil(mu))+3
+        mu=10*rate*pretry; k=int(np.ceil(mu))+R
         series.append({'conjunto':label,'n_gaps':len(gaps),'media_gap_s':gaps.mean(),
                        'ks_exponencial_nominal':ks.statistic,'ks_p_nominal_parametro_estimado':ks.pvalue,
                        'bloques_100':len(blocks),'media_reintentos_bloque':np.mean(blocks),
@@ -276,8 +275,8 @@ def f6(df):
     # un archivo de resultados previo de otro modulo.
     from llegadas_intentos import profile_interval
     n=len(df); failure=int((df.intentos-df.exito).sum()); attempts=int(df.intentos.sum())
-    rate_interval=[stats.chi2.ppf(.05,2*n)/(2*1030),stats.chi2.ppf(.95,2*(n+1))/(2*1030)]
-    failure_interval=profile_interval(failure,attempts,.9)
+    rate_interval=[stats.chi2.ppf(ALPHA/2,2*n)/(2*1030),stats.chi2.ppf(1-ALPHA/2,2*(n+1))/(2*1030)]
+    failure_interval=profile_interval(failure,attempts,CONFIANZA)
     pd.DataFrame([{'parametro':'tasa_llegadas_s','estimacion_validacion':validation['tasa_llegadas_s'],'ic_base_inferior':rate_interval[0],'ic_base_superior':rate_interval[1]},
                   {'parametro':'p_fallo_intento','estimacion_validacion':validation['p_fallo_intento'],'ic_base_inferior':failure_interval[0],'ic_base_superior':failure_interval[1]}]).to_csv(folder/'comparacion_intervalos_B_F6.csv',index=False)
 
@@ -286,7 +285,7 @@ def main(seed=SEED):
     rng=np.random.default_rng(seed)
     df=pd.read_csv(ROOT/'outputs/A1/solicitudes_auditadas.csv')
     parts=estable(df); stable=pd.concat(parts,ignore_index=True)
-    if len(stable)!=24956: raise ValueError(f'Régimen estable inesperado: {len(stable)} filas')
+    if stable.empty: raise ValueError('No hay solicitudes en el régimen estable seleccionado')
     f1(stable,rng); f2(parts,rng); f3(stable); f4(rng); f5(stable,rng); f6(stable)
 
 if __name__=='__main__': main()

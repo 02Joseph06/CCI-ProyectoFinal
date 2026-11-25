@@ -11,10 +11,10 @@ import scipy
 from scipy import stats
 
 from tiempos_c2 import estimar_gamma, estimar_lognormal
+from parametros import S as SEED, CONFIANZA, ALPHA, N
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs"
-SEED = 2046185499
 
 
 def datos_estables():
@@ -88,7 +88,7 @@ def c3(seed=SEED, replicas=2000):
         count = min(50, replicas-start)
         samples = rng.choice(red, size=(count, len(red)), replace=True)
         quantiles[start:start+count] = np.quantile(samples, .999, axis=1)
-    intervals = np.quantile(quantiles, [.05, .95])
+    intervals = np.quantile(quantiles, [(1-CONFIANZA)/2, (1+CONFIANZA)/2])
     tails = [{"umbral_ms": threshold, "empirica": float(np.mean(red > threshold)),
               "normal": float(stats.norm.sf(threshold, loc=mean, scale=sd))}
              for threshold in (35, 40, 45)]
@@ -99,10 +99,13 @@ def c3(seed=SEED, replicas=2000):
               "AD_estadistico": float(ad.statistic), "AD_valores_criticos": ad.critical_values.tolist(),
               "AD_significancias_pct": ad.significance_level.tolist(), "colas": tails,
               "AD_critico_10_scipy_instalado": float(ad.critical_values[np.flatnonzero(ad.significance_level == 10)[0]]),
+              "AD_significancia_grupo_pct": 100 * ALPHA,
+              "AD_critico_grupo_scipy_instalado": float(ad.critical_values[np.flatnonzero(np.isclose(ad.significance_level, 100 * ALPHA))[0]]),
+              "AD_decision_grupo": "no rechaza" if ad.statistic < ad.critical_values[np.flatnonzero(np.isclose(ad.significance_level, 100 * ALPHA))[0]] else "rechaza",
               "AD_referencia_10_indicada_por_estudiante": .656,
               "AD_decision_referencia_estudiante": "no rechaza" if ad.statistic < .656 else "rechaza",
               "percentil_empirico_999_ms": float(np.quantile(red, .999)),
-              "bootstrap_percentil_replicas": replicas, "bootstrap_confianza": .90,
+              "bootstrap_percentil_replicas": replicas, "bootstrap_confianza": CONFIANZA,
               "bootstrap_IC_ms": intervals.tolist(),
               "percentil_normal_999_ms": float(stats.norm.ppf(.999, loc=mean, scale=sd)),
               "nota": "KS con parámetros ajustados: p nominal; el bootstrap remuestrea observaciones, no bloques temporales. "
@@ -123,7 +126,7 @@ def c3(seed=SEED, replicas=2000):
     return result
 
 
-def c4(seed=SEED, replicas=200000, N=16):
+def c4(seed=SEED, replicas=200000, N=N):
     data = datos_estables()
     positive = data.loc[data.cache_hit == 0, "gpu_ms"].to_numpy(dtype=float)
     if np.any(positive <= 0):
@@ -142,12 +145,13 @@ def c4(seed=SEED, replicas=200000, N=16):
         blocks = rng.choice(positive, size=(size, N), replace=True)
         hits += int(np.count_nonzero(blocks.sum(axis=1) > threshold))
     mc = hits/replicas
-    mc_interval = stats.binomtest(hits, replicas).proportion_ci(confidence_level=.90)
+    mc_interval = stats.binomtest(hits, replicas).proportion_ci(confidence_level=CONFIANZA)
     result = {"N": N, "n_positivos": len(positive), "media_ms": float(mean),
               "var_muestral_ms2": float(var), "umbral_ms": float(threshold),
               "prob_normal": normal, "prob_gamma": gamma_tail,
               "prob_remuestreo_iid": mc, "replicas": replicas,
-              "IC_monte_carlo_90": [float(mc_interval.low), float(mc_interval.high)],
+              "nivel_confianza": CONFIANZA,
+              "IC_monte_carlo": [float(mc_interval.low), float(mc_interval.high)],
               "nota": "El remuestreo i.i.d. usa la distribución empírica; no preserva dependencia temporal ni prueba que sea la distribución poblacional."}
     guardar("C4", result)
     return result

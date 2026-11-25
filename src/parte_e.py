@@ -10,12 +10,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy import stats
+try:
+    from .parametros import S as SEED, CONFIANZA as CONFIDENCE, PREVALENCIA as PREVALENCE, KMAX
+except ImportError:
+    from parametros import S as SEED, CONFIANZA as CONFIDENCE, PREVALENCIA as PREVALENCE, KMAX
 
 ROOT = Path(__file__).resolve().parents[1]
-SEED = 2046185499
-CONFIDENCE = .90
-PREVALENCE = .007
-KMAX = 8
 RULES = ("D1", "D2", "D1_y_D2", "D1_o_D2")
 
 
@@ -28,7 +28,8 @@ def wilson(successes, total, confidence=CONFIDENCE):
     denominator = 1 + z*z/total
     center = (p + z*z/(2*total)) / denominator
     radius = z*np.sqrt(p*(1-p)/total + z*z/(4*total*total))/denominator
-    return max(0., center-radius), min(1., center+radius)
+    return (0. if successes == 0 else max(0., center-radius),
+            1. if successes == total else min(1., center+radius))
 
 
 def ppv(tpr, fpr, prevalence):
@@ -65,7 +66,7 @@ def analyze(df, seed=SEED, output_root=None, simulations=200_000):
         e1.append(dict(regla=rule, incidentes=positive, verdaderos_positivos=hits,
                        sin_incidente=negative, falsos_positivos=false, sensibilidad=tpr,
                        sensibilidad_ic_inf=tlo, sensibilidad_ic_sup=thi,
-                       fpr=fpr, fpr_ic_inf=flo, fpr_ic_sup=fhi, metodo_ic="Wilson 90%"))
+                       fpr=fpr, fpr_ic_inf=flo, fpr_ic_sup=fhi, metodo_ic=f"Wilson {CONFIDENCE:.0%}"))
         e2.append(dict(regla=rule, prevalencia_pruebas_observada=test_prevalence,
                        prevalencia_produccion=PREVALENCE, vpp_produccion=ppv(tpr, fpr, PREVALENCE),
                        vpp_pruebas=ppv(tpr, fpr, test_prevalence),
@@ -119,7 +120,7 @@ def analyze(df, seed=SEED, output_root=None, simulations=200_000):
         x = np.arange(0, 31)
         for _, row in e4.iterrows():
             ax.plot(x, stats.binom.pmf(x, 1440, row.prob_falsa_alarma_minuto), label=row.regla)
-        ax.axvline(KMAX, color="black", linestyle="--", label="Límite: 8 falsas alarmas")
+        ax.axvline(KMAX, color="black", linestyle="--", label=f"Límite: {KMAX} falsas alarmas")
         ax.set(xlabel="Falsas alarmas en un día (número)", ylabel="Probabilidad",
                title="Figura 6. Falsas alarmas diarias bajo independencia temporal")
         ax.legend()

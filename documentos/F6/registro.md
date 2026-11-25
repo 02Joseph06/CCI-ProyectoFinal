@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Auditoría y comparación temporal con solicitudes_validacion.csv: ../../outputs/F6/comparacion_validacion_F6.csv. Cambios en fallos no identifican por sí solos su causa.
+
+Fuente: ../../outputs/F6/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # F6 - Validación temporal independiente
 
 Se reutiliza la auditoría A1 en una carpeta temporal sin modificar los archivos originales ni sus salidas: corrección de tamaños, deduplicación y tolerancia física de 0,015001 ms. Se conservan 29.485 de 29.781 registros; 88 duplicados exactos eliminados, un identificador contradictorio y 207 exclusiones por latencia no verificable. Se usa la ventana completa de 1.200 s solo para F6.

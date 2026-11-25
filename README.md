@@ -1,40 +1,28 @@
-# CCI-ProyectoFinal
+# Proyecto final — Andes Vision AI
 
-Análisis reproducible de telemetría para el proyecto de Ciencia Computacional
-Intermedia. Las partes A, B, C y D están implementadas en el notebook
-[`notebooks/partes_A_B.ipynb`](notebooks/partes_A_B.ipynb).
-El mismo notebook incluye E, F, los 200 escenarios de G3 solicitados por el
-grupo y un memorando G4 provisional. G3 usa cinco réplicas internas y un
-criterio puntual; G2 usa el límite superior de un intervalo. Las diferencias
-con los valores aportados, las limitaciones de G1 y la sensibilidad al modelo
-se documentan en `documentos/calculos/discrepancias_pendientes.md` y deben
-revisarse antes de considerar definitivas las recomendaciones.
+Análisis de telemetría, alertas y capacidad GPU para Ciencia Computacional Intermedia. Los CSV del grupo corresponden a la semilla **S = 2279892322**, con confianza del 95 %, umbral de 190 ms y tolerancia del 2 %.
 
-1. Cree un entorno Python e instale las dependencias con
-   `python -m pip install -r requirements.txt`.
-2. Abra el notebook desde la raíz del repositorio o desde `notebooks/` y
-   ejecútelo de principio a fin con el kernel del entorno.
-3. Las tablas y figuras se generan en [`outputs/`](outputs/); los archivos
-   originales en [`data/raw/`](data/raw/) no se modifican. El archivo de
-   validación se reserva para el punto F6.
+## Dónde está cada cosa
 
-El notebook registra las identificaciones y la semilla del grupo; por ello el
-repositorio debe permanecer privado. Usa `np.random.default_rng(S)` como fuente
-de aleatoriedad. La documentación de trabajo de `documentos/` y `docs/` es
-local y está excluida de Git por decisión del grupo.
-La guía digital de deducciones está en
-`documentos/manuscrito/deducciones_B3_C1_D3_F5.md`; no sustituye la entrega
-manuscrita exigida por el enunciado.
-El informe de revisión en Word/PDF está en `outputs/informe/`; su fuente y la
-declaración de uso de IA para revisar y firmar están en `documentos/informe/`.
+- [Notebook para Colab, sin `src/` externo](notebooks/Proyecto_Final_Colab_Sin_Src.ipynb): contiene el código y carga los CSV de Drive después de la autorización. Crea módulos temporales durante la ejecución y también admite CSV locales.
+- [Notebook modular, dependiente de `src/`](notebooks/Proyecto_Final_Modular.ipynb): ejecuta las partes A–G con los módulos de [`src/`](src/) y los CSV de [`data/raw/`](data/raw/).
+- [Resultados](outputs/README.md): tablas y figuras por apartado, informe y memorando.
+- [Documentación](documentos/README.md): cálculos, decisiones, informe editable y guía de deducciones.
+- [Pruebas](tests/README.md): verificaciones de auditoría, modelos, simulación y carga de datos.
 
-La selección del régimen estable y las exclusiones aplicadas a la telemetría
-son supuestos de análisis. En particular, las tasas obtenidas después de
-excluir filas por datos de latencia describen las solicitudes conservadas y
-pueden diferir de las tasas del tráfico original.
+## Ejecutar localmente
 
-En C3 se conserva la referencia Anderson–Darling de 0,656 elegida por el
-grupo y, por separado, el valor 0,631 calculado por SciPy 1.18.1. Esa versión
-se fija en las dependencias porque la interfaz de valores críticos cambia en
-versiones posteriores. Las deducciones manuscritas y la interpretación para
-el informe siguen siendo responsabilidad del grupo.
+Desde la raíz, con el entorno virtual del proyecto y las dependencias de [requirements.txt](requirements.txt):
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -q -b
+```
+
+Después abre el notebook modular y ejecuta todas sus celdas. Las salidas se generan en `outputs/`; los CSV originales no se modifican. Para el notebook de Colab, usa la cuenta con acceso a la carpeta de Drive configurada o cambia la fuente a `local` en la celda de preparación.
+
+## Alcance de los resultados
+
+El modelo principal selecciona 3 GPU bajo los supuestos documentados; el contraste M/M/c no cumple el mismo SLO con esa capacidad. En E4, la regla conjunta cumple el criterio puntual, pero no al usar el extremo superior conservador del intervalo de falsos positivos. Ambos resultados requieren interpretación del grupo y no son garantías operativas.
+
+El informe y la declaración de IA son borradores para revisión; las deducciones manuscritas deben prepararse y verificarse por el grupo. Por decisión del grupo, `.gitignore` excluye `docs/` y `documentos/`; conserva el repositorio privado por los datos y las identificaciones del grupo.

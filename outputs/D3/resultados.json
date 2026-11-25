@@ -36,10 +36,10 @@
   "bp_gl": 1,
   "bp_p_numerico": 0.0,
   "intervalos": {
-    "nivel": 0.9,
+    "nivel": 0.95,
     "distribucion": "t de Student",
     "grados_libertad": 14694,
-    "valor_critico": 1.6449573336211347
+    "valor_critico": 1.9601254425043413
   },
   "nota": "p numérico cero puede indicar subdesbordamiento; WLS asume la forma de pesos elegida."
 }

@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Varianza total: 1180.7190 + 311.0560 = 1491.7750 ms²; fracción explicada 20.8514%.
+
+Fuente: ../../outputs/D2/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # D2: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## D2 — Esperanzas y varianzas condicionales
 

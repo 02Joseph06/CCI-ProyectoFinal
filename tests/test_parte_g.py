@@ -66,7 +66,7 @@ class TestParteG(unittest.TestCase):
         servicio = rng.exponential(media_ms, cantidad)
         cola_mc = np.mean(red + (~hit)*(espera+servicio) > 210)
         _, cola_analitica = mmc_cola_latencia(
-            tasa, cache, np.log(media_ms), 1e-8, 30, 5, c)
+            tasa, cache, np.log(media_ms), 1e-8, 30, 5, c, 210)
         self.assertLess(abs(cola_mc-cola_analitica), .003)
 
     def test_g3_mmc_cola_y_sin_estabilidad(self):
@@ -138,7 +138,7 @@ class TestParteG(unittest.TestCase):
         simulador = lambda *args: np.full(10, 300.)
         salida = evaluar_escenarios_g3([escenario, escenario], [2],
                                        np.random.default_rng(7), 2, 1, 0,
-                                       210, .01, "limite_superior_90", simulador)
+                                       210, .01, "limite_superior", simulador)
         self.assertTrue(salida.c_optimo_entre_capacidades_evaluadas.isna().all())
         with self.assertRaises(ValueError):
             evaluar_escenarios_g3([escenario], [2], np.random.default_rng(7),
@@ -158,7 +158,7 @@ class TestParteG(unittest.TestCase):
                                         simular_con_alternancia())
 
         puntual = ejecutar("estimacion")
-        superior = ejecutar("limite_superior_90")
+        superior = ejecutar("limite_superior")
         self.assertEqual(puntual.loc[0, "violacion"], .01)
         self.assertTrue(puntual.loc[0, "cumple"])
         self.assertFalse(superior.loc[0, "cumple"])

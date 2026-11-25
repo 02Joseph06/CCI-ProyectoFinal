@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Coberturas simuladas con s muestral: n=30 0.92550, n=200 0.94740; primer tamaño de la rejilla que supera 0,94: 200.
+
+Fuente: ../../outputs/F1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # F1 - Distribución muestral de la media
 
 Población utilizada: las 24.956 latencias de los dos tramos estables auditados. Cada réplica extrae con reemplazo de esa población empírica; hay 20.000 réplicas por tamaño, semilla 2046185499. La media de referencia es la media empírica de la población, no un valor conocido de producción.

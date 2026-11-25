@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Sensibilidades, tasas de falsos positivos e intervalos Wilson 95 %: ../../outputs/E1/metricas_E1.csv.
+
+Fuente: ../../outputs/E1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # E1 — Sensibilidad y falsos positivos
 
 Fuente: `data/raw/monitoreo.csv`, 6.000 minutos: 663 con incidente, 5.337 sin incidente; sin nulos en las columnas necesarias. Cada regla se evalúa directamente con sus alertas observadas.

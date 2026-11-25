@@ -21,7 +21,7 @@ class DependenciasTest(unittest.TestCase):
             folder = root / "outputs" / "A1"
             folder.mkdir(parents=True)
             pd.DataFrame({"t_llegada_s": [1, 2, 3, 4, 900, 901],
-                          "tam_kb": [119.99, 119.99, 120, 120, 500, 500],
+                          "tam_kb": [99.99, 99.99, 100, 100, 450, 450],
                           "cache_hit": [0, 1, 0, 1, 0, 1]}).to_csv(
                 folder / "solicitudes_auditadas.csv", index=False)
             old_root, old_out = dependencias_d1.ROOT, dependencias_d1.OUT

@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Descriptivos por régimen y versión con varianza muestral n−1; tabla completa: ../../outputs/A3/resumen_descriptivo.csv.
+
+Fuente: ../../outputs/A3/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # A3: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## A3. Descriptivos
 

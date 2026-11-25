@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Gamma k=2.52566, θ=21.09866; lognormal μ=3.76487, σ=0.65929; KS descriptivos 0.03976 y 0.01072.
+
+Fuente: ../../outputs/C2/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # C2: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## C2 — Ajuste de la parte positiva
 

@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+La prueba χ² por estado y su frecuencia esperada mínima están en ../../outputs/E3/independencia_condicional_E3.csv; el estrato sin incidente tiene frecuencia esperada menor a 5.
+
+Fuente: ../../outputs/E3/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # E3 — Dependencia condicional
 
 Por cada valor de `incidente` se tabulan D1 y D2 y se calcula el estadístico $\chi^2=\sum_{i,j}(O_{ij}-E_{ij})^2/E_{ij}$, con $E_{ij}=O_{i+}O_{+j}/n$ y 1 grado de libertad. Se emplea `scipy.stats.chi2_contingency(..., correction=False)`. Las combinaciones conjuntas observadas se comparan con $P(D_1=1\mid I)P(D_2=1\mid I)$ y su complemento para la regla OR; esas tasas hipotéticas también se insertan en Bayes de E2.

@@ -1,3 +1,5 @@
+> **Registro histórico:** sus cifras corresponden a la semilla anterior. Consulte los registros de cada punto y [corrección de identificaciones](correccion_identificaciones.md) para la ejecución vigente.
+
 # Actualización de A y B — auditoría y régimen
 
 ## Estado y procedencia

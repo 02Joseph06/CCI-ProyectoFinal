@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Covarianza=4526.5613 KB·ms; r=0.69384; R²=0.48141; asociación no implica causalidad.
+
+Fuente: ../../outputs/D4/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # D4: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## D4 — Covarianza y correlación
 

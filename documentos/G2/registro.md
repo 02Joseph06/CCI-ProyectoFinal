@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+g=1,5, τ=190 ms, ε=2 %: con 3 GPU violación=1.57760%, IC 95 % [1.5441 %; 1.6111 %]; primera capacidad que cumple por límite superior en la cuadrícula evaluada, bajo el modelo.
+
+Fuente: ../../outputs/G2/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # G2. Proyección de capacidad
 
 **Estado:** implementado y ejecutado con el modelo de G1; selección provisional, supeditada a la validación de cola y al significado de la tasa. Se aplica $g=1,5$, $\tau=210$ ms y $\epsilon=0,01$.

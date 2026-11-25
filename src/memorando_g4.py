@@ -10,6 +10,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
+from parametros import CONFIANZA, TAU_MS, KMAX, CRECIMIENTO, EPSILON
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs" / "G4"
@@ -27,8 +28,8 @@ def main():
     g2 = pd.read_csv(ROOT / "outputs/G2/capacidad_proyeccion_G2.csv").set_index("gpus")
     gpu = f3.loc["GPU sin caché (ms)"]
     retry = f3.loc["reintento (>1)"]
-    slo = f3.loc["violación SLO >210 ms"]
-    base_tail = g1.loc["proporcion_mayor_210_ms"]
+    slo = f3.loc[f"violación SLO >{TAU_MS} ms"]
+    base_tail = g1.loc[f"proporcion_mayor_{TAU_MS}_ms"]
     block = f2[f2.metodo.str.contains("bloques móviles", regex=False)].iloc[0]
     incident = e4.loc["D1_y_D2"]
     vpp = e2.loc["D1_y_D2", "vpp_produccion"]
@@ -41,9 +42,13 @@ def main():
         p3 = float(dist.loc["3", "proporcion"])
         p4 = float(dist.loc["4", "proporcion"])
         p5 = float(dist.loc["5", "proporcion"])
+        elegibles = g2[(g2.rho < 1) & (g2.ic_superior <= EPSILON)]
+        seleccion = int(elegibles.index.min()) if not elegibles.empty else None
+        contraste = (f"Con {seleccion} GPU, cumplimiento puntual {g3.loc[seleccion, 'prob_cumplimiento']:.1%}; "
+                     f"M/M/c estima {g3.loc[seleccion, 'violacion_media_mmc']:.2%} de violaciones. "
+                     if seleccion in g3.index else "No hay capacidad seleccionada en la cuadrícula. ")
         status = (f"En G3, la capacidad mínima fue 3/4/5 GPU en {p3:.1%}/{p4:.1%}/{p5:.1%} "
-                  f"de los escenarios; con 4 GPU el cumplimiento individual fue {g3.loc[4, 'prob_cumplimiento']:.1%}. "
-                  f"El contraste M/M/c estima {g3.loc[4, 'violacion_media_mmc']:.2%} de violaciones con 4 GPU. "
+                  f"de los escenarios. {contraste}"
                   "G3 usa el criterio puntual, cinco réplicas internas y posterior del modelo; G2 usa el límite superior del IC.")
     else:
         status = "La propagación G3 y la recomendación final están pendientes de las decisiones del grupo."
@@ -55,28 +60,28 @@ def main():
         ("ESTADO: cifras calculadas con hipótesis y discrepancias pendientes; no es una recomendación validada.", False),
         ("1. SERVICIO OBSERVADO", True),
         (f"En 1.030 s estables se retuvieron {format(b['B1']['n'], ',').replace(',', '.')} solicitudes: tasa {b['B1']['rate_s']:.3f}/s "
-         f"(IC 90 % [{b['B1']['rate_interval'][0]:.3f}; {b['B1']['rate_interval'][1]:.3f}]) y caché {c['p_cache']:.2%}. "
+         f"(IC {CONFIANZA:.0%} [{b['B1']['rate_interval'][0]:.3f}; {b['B1']['rate_interval'][1]:.3f}]) y caché {c['p_cache']:.2%}. "
          f"La latencia media es {block.estimacion_ms:.2f} ms; el bootstrap por bloques da "
          f"[{block.inferior_ms:.2f}; {block.superior_ms:.2f}] ms. La tasa se refiere a filas conservadas tras auditoría.", False),
-        (f"La proporción observada de latencias superiores a 210 ms es {base_tail.observado:.2%}. "
+        (f"La proporción observada de latencias superiores a {TAU_MS} ms es {base_tail.observado:.2%}. "
          f"En F6, la estimación de fallos por intento cambia de {v6.base:.2%} a {v6.validacion:.2%}; "
          "la estabilidad de todas las distribuciones y la causa del cambio no están demostradas.", False),
         ("2. COMPARACIÓN B − A", True),
-        (f"GPU sin caché: {gpu.diferencia_B_menos_A:+.3f} ms; IC conjunto 90 % "
+        (f"GPU sin caché: {gpu.diferencia_B_menos_A:+.3f} ms; IC conjunto {CONFIANZA:.0%} "
          f"[{gpu.ic_bonferroni_inferior:.3f}; {gpu.ic_bonferroni_superior:.3f}] ms. "
          f"Reintentos: {100*retry.diferencia_B_menos_A:+.3f} puntos porcentuales; "
          f"violación del SLO: {100*slo.diferencia_B_menos_A:+.3f} puntos porcentuales. "
          "La decisión sobre la versión debe considerar los intervalos completos; no rechazar una diferencia no prueba equivalencia.", False),
         ("3. CAPACIDAD Y ALERTAS: RESULTADOS CONDICIONALES", True),
-        (f"Con el tráfico multiplicado por 1,5, G2 estima violaciones de {g2.loc[2,'violacion']:.2%}, "
+        (f"Con el tráfico multiplicado por {CRECIMIENTO:g}, G2 estima violaciones de {g2.loc[2,'violacion']:.2%}, "
          f"{g2.loc[3,'violacion']:.2%} y {g2.loc[4,'violacion']:.2%} para 2, 3 y 4 GPU. "
          f"En G1 la cola simulada ({base_tail.simulado:.2%}) difiere de la observada ({base_tail.observado:.2%}); "
          "los intervalos de G2 miden error de simulación con parámetros fijos.", False),
         (f"Para D1 y D2, E estima {incident.media_falsas_diarias:.2f} falsas alarmas/día y "
          f"{vpp:.1%} de probabilidad de incidente por alerta en producción, bajo transportabilidad de tasas. "
-         f"La probabilidad puntual de no superar 8 falsas alarmas es {incident.prob_hasta_k:.2%}; "
+         f"La probabilidad puntual de no superar {KMAX} falsas alarmas es {incident.prob_hasta_k:.2%}; "
          f"con FPR en el extremo superior Wilson es {incident.prob_hasta_k_con_fpr_ic_sup:.2%}. "
-         "Se suponen minutos independientes y tasa constante.", False),
+         "El extremo conservador no cumple el 90 % exigido; se suponen minutos independientes y tasa constante.", False),
         (status + " El significado de los reintentos en la tasa observada sigue sin comprobarse.", False),
     ]
     lines = ["# " + paragraphs[0][0], "", *[p for p, _ in paragraphs[1:]], "",
@@ -90,8 +95,8 @@ def main():
     (local / "memorando_ejecutivo_G4.md").write_text(md, encoding="utf-8")
     (local / "registro.md").write_text(
         "# G4 — Memorando ejecutivo\n\n"
-        "El memorando es un borrador generado de salidas calculadas, no una recomendación final. "
-        "Incluye diferencias de validación G1, supuestos de E4 y bloqueos de G3. "
+        "El memorando es un borrador generado con la semilla vigente, no una recomendación final. "
+        "Incluye la discrepancia de G1, la propagación G3 y la limitación conservadora de E4. "
         "El texto previo del grupo se conserva por separado. Fórmulas y discrepancias: "
         "`../calculos/discrepancias_pendientes.md`. Salidas MD/PDF: `../../outputs/G4/`.\n",
         encoding="utf-8")

@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Planificación por versión sin caché: 10495 observaciones individual; 15658 con Bonferroni al 95 %.
+
+Fuente: ../../outputs/F5/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # F5 - Tamaño de muestra por versión
 
 Para tamaños iguales, desviaciones $s_A,s_B$ observadas en las no cacheadas y semiancho objetivo $h=1$ ms: $n=\left\lceil z_{1-\alpha_*/2}^2(s_A^2+s_B^2)/h^2\right\rceil$. Para el intervalo individual $\alpha_*=0,10$; para protección simultánea de tres métricas, $\alpha_*=0,10/3$. Esta aproximación usa z y varianzas tratadas como valores de planificación; no garantiza que el semiancho de todas las muestras futuras sea menor que 1 ms.

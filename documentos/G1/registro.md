@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Proporción L>190 ms observada=0.01899, simulada=0.02129; la diferencia es una limitación del modelo.
+
+Fuente: ../../outputs/G1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # G1. Validación de la simulación FIFO
 
 **Estado:** implementado y ejecutado; la discrepancia de cola requiere revisión para utilizar la proyección como evidencia de capacidad. Fuentes: enunciado oficial, parte G1 (p. 6); decisiones del grupo sobre B, C y simulación G1/G2.

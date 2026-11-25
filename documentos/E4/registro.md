@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+kₘáx=6; D1 y D2 tiene 2.4089 falsas alarmas/día, P(FA≤6) puntual=0.98826 y con FPR en extremo superior Wilson 95 %=0.82174. El segundo valor no alcanza 0,90; no hay una regla robustamente aceptable bajo ese criterio conservador.
+
+Fuente: ../../outputs/E4/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # E4 — Falsas alarmas por día
 
 Con $\pi=0,007$, $q=(1-\pi)\widehat{\mathrm{FPR}}$, $X\sim\mathrm{Binomial}(1440,q)$ y $k_{\max}=8$, se calcula $P(X\le8)$ y $1440q$. El modelo supone minutos independientes, prevalencia y FPR constantes: estas hipótesis no quedan verificadas por las cuentas agregadas.

@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Clases <100, [100,450), ≥450 KB; χ²=933.2784, p=2.194e-203; probabilidades e IC Wald 95 % en ../../outputs/D1/intervalos_cache_dada_clase.csv.
+
+Fuente: ../../outputs/D1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # D1: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## D1 — Distribución conjunta e independencia
 

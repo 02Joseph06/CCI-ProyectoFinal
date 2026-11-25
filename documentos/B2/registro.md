@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Bloques de 100: media estable 15.3012; media en sobrecarga 31.2759.
+
+Fuente: ../../outputs/B/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # B2: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ### B2. Reintentos por bloques
 

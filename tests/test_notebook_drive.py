@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 
-NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks/Proyecto_Final_AndesVisionAI.ipynb'
+NOTEBOOK = Path(__file__).resolve().parents[1] / 'notebooks/Proyecto_Final_Colab_Sin_Src.ipynb'
 
 
 def cargar_selector():

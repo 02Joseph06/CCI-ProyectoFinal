@@ -40,14 +40,17 @@
     }
   ],
   "AD_critico_10_scipy_instalado": 0.631,
+  "AD_significancia_grupo_pct": 5.000000000000004,
+  "AD_critico_grupo_scipy_instalado": 0.752,
+  "AD_decision_grupo": "no rechaza",
   "AD_referencia_10_indicada_por_estudiante": 0.656,
   "AD_decision_referencia_estudiante": "no rechaza",
   "percentil_empirico_999_ms": 43.33,
   "bootstrap_percentil_replicas": 2000,
-  "bootstrap_confianza": 0.9,
+  "bootstrap_confianza": 0.95,
   "bootstrap_IC_ms": [
-    42.964049999999844,
-    43.70494999999981
+    42.96,
+    43.818999999999654
   ],
   "percentil_normal_999_ms": 43.843806705008156,
   "nota": "KS con parámetros ajustados: p nominal; el bootstrap remuestrea observaciones, no bloques temporales. El crítico 0,656 es la referencia elegida por el estudiante; SciPy 1.18.1 calcula 0,631, por lo que no se atribuye 0,656 a esa versión."

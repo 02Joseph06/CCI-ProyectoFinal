@@ -1,23 +1,10 @@
-# Discrepancias pendientes de resolver
+# Discrepancias y límites vigentes
 
-Este registro distingue cifras suministradas en la conversación de cálculos
-reproducidos. Las conclusiones afectadas permanecen provisionales mientras el
-estudiante decide; las salidas no deben copiarse al memorando como hechos
-validados sin revisar la fuente, los métodos y sus límites.
+Resultados con S = 2279892322 y confianza del 95 %; las cifras históricas se conservan en [aportes anteriores](aportes_anteriores_no_validados.md).
 
-| Punto | Fuente o afirmación | Evidencia contrastada | Decisión pendiente |
-|---|---|---|---|
-| E2 | La tabla reciente indica prevalencia de prueba 0,25; un aporte anterior indica 663/6000. | `data/raw/monitoreo.csv`: 663 de 6000, o 0,1105. | El grupo confirmó que prevalecen los resultados calculados desde los CSV. |
-| E3 | La tabla reciente da p=0,032 con incidente y p=0,962 sin incidente; el aporte anterior proporciona otros p. | El χ² sin corrección sobre el CSV da p≈0,6313 y p≈4,64×10⁻³⁰, respectivamente; en el segundo estrato el mínimo esperado es 0,56. | Confirmar si complementar con Fisher y cómo reportar la diferencia. |
-| F1 | Un aporte sitúa el menor n en 30 y otro en 200. | Con 20.000 réplicas, para n=30 la cobertura es 0,87360 usando s por réplica y 0,90225 usando σ empírica fija; para n=5 son 0,78565 y 0,91990. La cobertura tiene incertidumbre Monte Carlo. | El grupo eligió s por réplica y n=200 entre los valores evaluados. |
-| F2 | Se facilitó [64,68; 65,64] ms para bloques móviles. | Bloques móviles de longitud 20, separados por tramo, y 20.000 réplicas producen [64,52476; 65,80996] ms. Este bootstrap no equivale al i.i.d. | El grupo indicó que prevalecen los cálculos reproducidos; documentar la diferencia. |
-| F4 | Se afirmó que Wilson mantiene cobertura de al menos 89 % en todas las configuraciones. | La ejecución actual con n=20, p=0,01 y 10000 réplicas dio 82,27 %. La suma binomial exacta da 0,99²⁰ = 0,81790694: solo el conteo cero produce un intervalo Wilson del 90 % que contiene 0,01. | El grupo indicó que prevalecen los cálculos reproducidos; no afirmar cobertura uniforme ≥89 %. |
-| F5 | Una referencia indica 7392/12372 observaciones; otra 7388/12325. | Las varianzas de los CSV y los cuantiles indicados dan 7392/12372 tras redondear hacia arriba. | Se reportan los cálculos reproducidos y la diferencia; falta verificar la deducción manuscrita. |
-| G1/G2 | Se propone recomendar cuatro GPU con resultados simulados suministrados. | El simulador calculado da violación histórica 0,013588 frente a observada 0,011380; la diferencia afecta la validación. | Decidir cómo tratar la discrepancia y la proyección condicionada al modelo. |
-| G3/F6 | Se afirmó que los reintentos ya se cuentan como llegadas separadas y que 4 GPU sigue garantizando el SLO. | El PDF, sección 4.2, define una fila por solicitud y una columna `intentos`; no aclara si cada reintento ya es otra llegada. La baja carga por sí sola no prueba el SLO. | G3 se ejecutó con los 200 escenarios y el contraste elegidos; el significado de λ y la robustez estructural siguen sin verificarse. |
-| G3, contraste M/M/c | Se anticipó que el contraste podría dar una capacidad menor. | Con caché y red incluidos, el contraste calcula una violación aproximada del 2,08 % con cuatro GPU; ninguna capacidad de la cuadrícula 2–5 alcanza el 1 %. Tres escenarios de G3 presentan clasificaciones no monótonas por ruido de simulación. | Interpretar el contraste como dependiente de sus supuestos y decidir si se amplía la simulación; no presentar cuatro GPU como garantía. |
-| E4 | Se afirmó que la probabilidad de cumplir supera 0,999 incluso al usar el extremo superior Wilson de FPR. | La binomial calculada da 0,999121 para la FPR puntual y 0,974309 con el extremo superior Wilson. | El grupo indicó binomial exacta y Wilson; se documentan ambas cifras y su diferencia. |
-
-Las pruebas con p alto no demuestran por sí solas equivalencia, independencia
-ni estacionariedad estricta. Los intervalos Monte Carlo no incluyen
-automáticamente la incertidumbre de los parámetros calibrados.
+- **E3:** el estrato sin incidente tiene una frecuencia esperada mínima de 0,56; la aproximación χ² es limitada. El grupo debe valorar si añade un contraste exacto.
+- **E4:** la regla D1 y D2 alcanza P(FA ≤ 6) = 98,83 % con la FPR puntual, pero 82,17 % con el extremo superior Wilson del 95 %. La segunda cifra no alcanza el 90 % exigido; el modelo supone independencia entre minutos y tasas constantes.
+- **G1:** para L > 190 ms, la cola observada es 1,899 % y la simulada 2,129 %. La diferencia es una limitación de calibración y su causa no está demostrada.
+- **G2–G3:** el modelo principal selecciona 3 GPU bajo los criterios documentados; el contraste M/M/c estima una violación de 3,38 % con 3 GPU, superior al límite del 2 %. No hay garantía fuera de los supuestos del modelo.
+- **F6 y reintentos:** aumenta la estimación de fallos por intento en validación, pero las trazas no identifican la causa ni prueban que cada reintento sea una llegada separada.
+- **Entrega:** las deducciones manuscritas B3, C1, D3 y F5 y la declaración de IA requieren revisión y firma del grupo. El alcance permitido de la IA debe comprobarse con el docente.

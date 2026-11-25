@@ -1,6 +1,6 @@
-# ?ndice de f?rmulas y c?lculos
+# Índice de cálculos vigentes
 
-Este directorio re?ne referencias y aportes de la conversaci?n. Cada punto tiene su propia carpeta. Las cifras aportadas por el estudiante se contrastan con los CSV y los resultados reproducibles; si hay discrepancias, quedan pendientes de resoluci?n.
+Semilla S=2279892322 y confianza 95 %. Los CSV fueron confirmados por el grupo. Los registros comienzan con los resultados actuales y, cuando corresponde, conservan las cifras de la semilla anterior bajo un encabezado histórico.
 
 - [A1](../A1/registro.md)
 - [A2](../A2/registro.md)
@@ -17,19 +17,6 @@ Este directorio re?ne referencias y aportes de la conversaci?n. Cada punto tiene
 - [D2](../D2/registro.md)
 - [D3](../D3/registro.md)
 - [D4](../D4/registro.md)
-
-- [Registro actualizado de A/B](../calculso/actualizacion_A_B.md)
-- [F?rmulas C/D](../../docs/formulas_C_D.md)
-- [Bit?cora](../../docs/bitacora_decisiones.md)
-- [Aporte previo del estudiante, sin validar](aportes_anteriores_no_validados.md)
-- [Discrepancias pendientes de resolución](discrepancias_pendientes.md)
-- [Handoff E–G](handoff_EFG.md)
-- [Guía digital para deducciones manuscritas B3, C1, D3 y F5](../manuscrito/deducciones_B3_C1_D3_F5.md)
-- [Informe A–G para revisión](../informe/informe_A_G.md)
-- [Declaración de uso de IA para revisión y firma](../informe/declaracion_uso_ia.md)
-
-## Partes E, F y G
-
 - [E1](../E1/registro.md)
 - [E2](../E2/registro.md)
 - [E3](../E3/registro.md)
@@ -43,6 +30,11 @@ Este directorio re?ne referencias y aportes de la conversaci?n. Cada punto tiene
 - [G1](../G1/registro.md)
 - [G2](../G2/registro.md)
 - [G3](../G3/registro.md)
-- [G4](../G4/registro.md)
+- [G4](../../outputs/G4/memorando_ejecutivo_G4.md)
 
-Algunos registros son provisionales y se?alan decisiones a?n no resueltas.
+- [Fórmulas de C y D](formulas_C_D.md)
+- [Bitácora de decisiones](bitacora_decisiones.md)
+- [Corrección de identificaciones](correccion_identificaciones.md)
+- [Informe vigente en PDF](../../outputs/informe/informe_A_G.pdf)
+
+El archivo `formulas_C_D.docx` de esta carpeta es histórico; la versión vigente está en [`formulas_C_D_vigentes.docx`](formulas_C_D_vigentes.docx).

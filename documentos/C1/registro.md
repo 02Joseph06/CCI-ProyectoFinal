@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+p_caché=0.411124; media G=31.38006 ms; varianza empírica divisor n=1491.77499 ms².
+
+Fuente: ../../outputs/C1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # C1: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## C1 — Caracterización de G
 

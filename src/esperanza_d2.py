@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from tiempos_cd import datos_estables
+from parametros import T1_KB, T2_KB
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs" / "D2"
@@ -66,7 +67,7 @@ def main():
     data = datos_estables()
     if data[["tam_kb", "gpu_ms", "cache_hit"]].isna().any().any():
         raise ValueError("Faltan variables necesarias para D2")
-    data["clase"] = pd.cut(data.tam_kb, [-np.inf, 120, 500, np.inf],
+    data["clase"] = pd.cut(data.tam_kb, [-np.inf, T1_KB, T2_KB, np.inf],
                            labels=["pequeña", "mediana", "grande"], right=False)
     nocache = data[data.cache_hit == 0].copy()
     all_result, positive_result = descomponer(data), descomponer(nocache)

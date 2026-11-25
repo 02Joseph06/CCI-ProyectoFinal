@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Régimen estable [0,668) ∪ [838,1200], 24.956 filas y 1.030 s; intervalo anómalo [668,838). No se demuestra estacionariedad estricta.
+
+Fuente: ../../outputs/A2/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # A2: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## A2. Régimen y sensibilidad
 

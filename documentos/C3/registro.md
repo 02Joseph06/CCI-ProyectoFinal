@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+Red media=29.61061 ms; P99,9=43.330 ms, bootstrap 95 % [42.96000; 43.81900]; Anderson-Darling al 5 %: A²=0.59109, crítico=0.752.
+
+Fuente: ../../outputs/C3/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # C3: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## C3 — Tiempo de red
 

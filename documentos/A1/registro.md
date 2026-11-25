@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+34.072 filas originales, 101 duplicados tras conversión y 33.737 filas válidas; tolerancia física 0,015001 ms.
+
+Fuente: ../../outputs/A1/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # A1: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## A1. Conversión, limpieza y conteos
 

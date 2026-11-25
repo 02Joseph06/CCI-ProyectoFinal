@@ -1,3 +1,5 @@
+> **Registro histórico:** sus cifras corresponden a la semilla anterior. Consulte los registros de cada punto y [corrección de identificaciones](correccion_identificaciones.md) para la ejecución vigente.
+
 # Registro de trabajo — partes A y B
 
 > **Registro histórico:** la actualización posterior de A1 y A2 y su estado

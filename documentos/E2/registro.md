@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+π=0,008; VPP de D1 y D2=0.75619; supuesto de independencia daría 0.98023.
+
+Fuente: ../../outputs/E2/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # E2 — Bayes y prevalencia
 
 Con sensibilidad $s=P(A\mid I)$, tasa falsa $f=P(A\mid I^c)$ y prevalencia $\pi$, $P(I\mid A)=\pi s/[\pi s+(1-\pi)f]$. Se usa $\pi=0,007$ para producción y $663/6000=0,1105$ para los datos de prueba, calculando además directamente incidentes entre alertas para verificación. Las estimaciones suponen que las tasas condicionales del experimento son transportables a producción.

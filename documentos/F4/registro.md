@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+Para n=20 y p=0,01, cobertura exacta Wald=0.18205, Wilson=0.98314; nivel 95 %.
+
+Fuente: ../../outputs/F4/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # F4 - Cobertura de Wald y Wilson
 
 Para $X\sim\mathrm{Binomial}(n,p)$, Wald es $\hat p\pm z_{.95}\sqrt{\hat p(1-\hat p)/n}$. Wilson tiene centro $(\hat p+z^2/(2n))/(1+z^2/n)$ y semiancho $z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}/(1+z^2/n)$. Se realizan 10.000 réplicas por configuración, con n=20,50,200,1000 y p=.01,.05,.15,.5, y se reporta el error Monte Carlo $\sqrt{\hat c(1-\hat c)/R}$.

@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+r=4; μ=37.06796; k=42; cola Poisson=0.22933; Monte Carlo=0.22852, IC 95 % [0.22668; 0.23037].
+
+Fuente: ../../outputs/B/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # B4: c?lculos y documentaci?n
 
-Fuente de este registro: [../calculso/actualizacion_A_B.md](../calculso/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/actualizacion_A_B.md](../calculos/actualizacion_A_B.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ### B4. Reintentos en diez segundos
 

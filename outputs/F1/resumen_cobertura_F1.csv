@@ -1,2 +1,2 @@
 criterio,n_minimo_en_rejilla,rejilla,replicas_por_n,advertencia
-cobertura estimada >= 0.89; z con s por réplica,200,"5, 30, 200, 2000",20000,La selección usa la estimación puntual; revisar IC Monte Carlo.
+cobertura estimada >= 0.94; z con s por réplica,200,"5, 30, 200, 2000",20000,La selección usa la estimación puntual; revisar IC Monte Carlo.

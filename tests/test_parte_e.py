@@ -5,6 +5,7 @@ import pandas as pd
 from scipy import stats
 
 from src.parte_e import analyze, ppv, wilson
+from src.parametros import PREVALENCIA, KMAX
 
 
 class TestParteE(unittest.TestCase):
@@ -23,10 +24,10 @@ class TestParteE(unittest.TestCase):
         self.assertEqual((a.verdaderos_positivos, a.falsos_positivos), (1, 1))
         b = result["E2"].set_index("regla").loc["D1_y_D2"]
         self.assertTrue(np.isclose(b.vpp_pruebas, b.vpp_directo))
-        self.assertTrue(np.isclose(b.vpp_produccion, ppv(.25, .25, .007)))
-        self.assertTrue(np.isclose(b.vpp_produccion, .007))
+        self.assertTrue(np.isclose(b.vpp_produccion, ppv(.25, .25, PREVALENCIA)))
+        self.assertTrue(np.isclose(b.vpp_produccion, PREVALENCIA))
         daily = result["E4"].set_index("regla").loc["D1_y_D2"]
-        self.assertTrue(np.isclose(daily.prob_hasta_k, stats.binom.cdf(8, 1440, .993*.25)))
+        self.assertTrue(np.isclose(daily.prob_hasta_k, stats.binom.cdf(KMAX, 1440, (1-PREVALENCIA)*.25)))
         self.assertLessEqual(daily.prob_hasta_k_con_fpr_ic_sup, daily.prob_hasta_k)
 
     def test_rechaza_entradas_invalidas(self):

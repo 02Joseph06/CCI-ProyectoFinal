@@ -1,3 +1,11 @@
+# Actualización vigente — S = 2279892322
+
+En 200 escenarios, 3 GPU es la menor capacidad en 200 escenarios; con 3 GPU cumplimiento puntual=100.00%. Contraste M/M/c con 3 GPU: violación media=3.38%>2 %. No es garantía operacional.
+
+Fuente: ../../outputs/G3/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # G3. Incertidumbre de parámetros y capacidad
 
 Se generan 200 escenarios a partir del régimen estable auditado: n = 24.956 solicitudes, duración de 1.030 s y 14.696 sin caché. Se usa `np.random.default_rng(2046185499)`. La tasa base se extrae de Gamma(n, escala = 1/1030) y se multiplica por 1,5. La probabilidad de caché se extrae de Beta(k+0,5, n-k+0,5). Para los logaritmos de GPU se usan $\sigma^2=(n_+-1)s^2/\chi^2_{n_+-1}$ y $\mu\mid\sigma^2\sim N(\bar y,\sigma^2/n_+)$. Las estadísticas se calculan con la precisión completa de los datos, no con las cifras redondeadas del enunciado del usuario. La red normal conserva media y desviación muestral fijas. Los sorteos de tasa, caché y parámetros de GPU se generan independientemente: esta independencia es un supuesto de modelación, no una dependencia empírica comprobada.

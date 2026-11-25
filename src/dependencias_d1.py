@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy import stats
+from parametros import CONFIANZA, T1_KB, T2_KB
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs" / "D1"
@@ -20,7 +21,7 @@ def main():
     data = df.loc[stable, ["tam_kb", "cache_hit"]].copy()
     if data.isna().any().any() or not data.cache_hit.isin([0, 1]).all():
         raise ValueError("Valores faltantes o categorías de caché inválidas; se requiere decisión del grupo")
-    data["clase"] = pd.cut(data.tam_kb, bins=[-np.inf, 120, 500, np.inf],
+    data["clase"] = pd.cut(data.tam_kb, bins=[-np.inf, T1_KB, T2_KB, np.inf],
                            labels=["pequeña", "mediana", "grande"], right=False)
     counts = pd.crosstab(data.clase, data.cache_hit).reindex(
         index=["pequeña", "mediana", "grande"], columns=[0, 1], fill_value=0)
@@ -32,11 +33,12 @@ def main():
     result = stats.chi2_contingency(counts, correction=False)
     n_class = counts.sum(axis=1)
     p_cache = counts[1] / n_class
-    z = stats.norm.ppf(.95)
+    z = stats.norm.ppf((1 + CONFIANZA) / 2)
     margin = z * np.sqrt(p_cache * (1-p_cache) / n_class)
     intervals = pd.DataFrame({"n": n_class, "cache_1": counts[1], "proporcion": p_cache,
-                              "inferior_wald_90": p_cache-margin,
-                              "superior_wald_90": p_cache+margin})
+                              "inferior_wald": p_cache-margin,
+                              "superior_wald": p_cache+margin,
+                              "nivel_confianza": CONFIANZA})
     OUT.mkdir(parents=True, exist_ok=True)
     counts.to_csv(OUT / "conteos.csv")
     joint.to_csv(OUT / "conjunta.csv")
@@ -48,7 +50,7 @@ def main():
                "chi_cuadrado": float(result.statistic), "grados_libertad": int(result.dof),
                "p_valor": float(result.pvalue),
                "frecuencia_esperada_minima": float(result.expected_freq.min()),
-               "intervalos": "Wald normal al 90 %; solicitado por el estudiante."}
+               "intervalos": f"Wald normal al {CONFIANZA:.0%}."}
     (OUT / "resumen.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     fig, ax = plt.subplots(figsize=(7, 4.5))
     heat = ax.imshow(joint.to_numpy(), cmap="YlOrBr", aspect="auto")

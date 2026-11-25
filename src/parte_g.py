@@ -13,9 +13,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy import stats, integrate
+from parametros import S as SEED, CONFIANZA, TAU_MS, EPSILON, CRECIMIENTO
 
 ROOT = Path(__file__).resolve().parents[1]
-SEED = 2046185499
 
 
 def simular_fifo(rng, tasa_s, prob_cache, mu_log, sigma_log, red_media,
@@ -47,7 +47,7 @@ def simular_fifo(rng, tasa_s, prob_cache, mu_log, sigma_log, red_media,
     return (red + espera + servicio)[llegada >= calentamiento_s]
 
 
-def _intervalo_replicas(values, nivel=.90):
+def _intervalo_replicas(values, nivel=CONFIANZA):
     values = np.asarray(values, dtype=float)
     media = values.mean()
     margen = stats.t.ppf((1 + nivel) / 2, len(values) - 1) * stats.sem(values)
@@ -86,7 +86,7 @@ def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
     Cada escenario debe contener tasa_s, prob_cache, mu_log, sigma_log,
     red_media y red_desv. Se conserva su dependencia conjunta: el llamador
     es responsable de construir cada fila y documentar su procedimiento.
-    `regla` es 'estimacion' o 'limite_superior_90'; la segunda usa un IC t
+    `regla` es 'estimacion' o 'limite_superior'; la segunda usa un IC t
     entre réplicas de simulación, no un IC de los parámetros calibrados.
     Devuelve una fila por escenario y capacidad. Ningún c cumple si su cola
     es inestable. Una capacidad sin cumplimiento queda como valor faltante.
@@ -95,7 +95,7 @@ def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
         raise TypeError("rng debe ser un numpy.random.Generator")
     if replicas < 2 or int(replicas) != replicas:
         raise ValueError("Se necesitan al menos dos réplicas enteras")
-    if regla not in ("estimacion", "limite_superior_90"):
+    if regla not in ("estimacion", "limite_superior"):
         raise ValueError("Seleccione explícitamente la regla de cumplimiento")
     if (not np.isfinite(umbral_ms) or not 0 <= epsilon <= 1
             or not np.isfinite(duracion_s) or duracion_s <= 0
@@ -123,7 +123,8 @@ def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
             rho = tasa * (1 - cache) * media_gpu / (1000 * c)
             fila = {"escenario": indice, "gpus": c, "rho": rho,
                     "estable": bool(rho < 1), "violacion": np.nan,
-                    "ic_90_inferior": np.nan, "ic_90_superior": np.nan,
+                    "ic_inferior": np.nan, "ic_superior": np.nan,
+                    "nivel_confianza": CONFIANZA,
                     "cumple": False}
             if rho < 1:
                 proporciones = []
@@ -136,8 +137,8 @@ def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
                     proporciones.append(np.mean(latencias > umbral_ms))
                 media, inferior, superior = _intervalo_replicas(proporciones)
                 criterio = media if regla == "estimacion" else superior
-                fila.update(violacion=media, ic_90_inferior=inferior,
-                            ic_90_superior=superior, cumple=bool(criterio <= epsilon))
+                fila.update(violacion=media, ic_inferior=inferior,
+                            ic_superior=superior, cumple=bool(criterio <= epsilon))
             escenario_filas.append(fila)
         elegibles = [f["gpus"] for f in escenario_filas if f["cumple"]]
         c_optimo = min(elegibles) if elegibles else np.nan
@@ -150,7 +151,7 @@ def evaluar_escenarios_g3(escenarios, servidores, rng, replicas, duracion_s,
 
 
 def generar_escenarios_g3(stable, rng, n_escenarios=200, duracion_estable=1030,
-                          crecimiento=1.5):
+                          crecimiento=CRECIMIENTO):
     """Posteriores independientes de llegada, caché y parámetros lognormales."""
     if not isinstance(rng, np.random.Generator):
         raise TypeError("rng debe ser un numpy.random.Generator")
@@ -176,7 +177,7 @@ def generar_escenarios_g3(stable, rng, n_escenarios=200, duracion_estable=1030,
                              red_desv=red.std(ddof=1)))
 
 
-def mmc_cola_latencia(tasa, cache, mu, sigma, red_mu, red_sd, c, umbral=210):
+def mmc_cola_latencia(tasa, cache, mu, sigma, red_mu, red_sd, c, umbral=TAU_MS):
     """Cola total bajo M/M/c: caché/red independientes y servicio exponencial."""
     if cache == 1:
         return 0., float(stats.norm.sf((umbral-red_mu)/red_sd))
@@ -211,7 +212,7 @@ def mmc_cola_latencia(tasa, cache, mu, sigma, red_mu, red_sd, c, umbral=210):
 
 def ejecutar_g3(stable, seed=SEED, n_escenarios=200, replicas=5,
                  duracion_s=400, calentamiento_s=20, capacidades=(2, 3, 4, 5),
-                 umbral_ms=210, epsilon=.01, crecimiento=1.5, guardar=True):
+                 umbral_ms=TAU_MS, epsilon=EPSILON, crecimiento=CRECIMIENTO, guardar=True):
     """Genera y evalúa escenarios; conserva fallos de la rejilla seleccionada."""
     rng = np.random.default_rng(seed)
     if duracion_s <= calentamiento_s:
@@ -238,16 +239,17 @@ def ejecutar_g3(stable, seed=SEED, n_escenarios=200, replicas=5,
                             "prob_cumplimiento_mmc": np.mean(valid <= epsilon),
                             "escenarios_inestables_mmc": int(np.isnan(valid).sum())})
     resumen = resumen.merge(pd.DataFrame(comparacion), on="gpus")
-    # Intervalos Wilson al 90 % para el error de Monte Carlo entre escenarios.
+    # Intervalos Wilson para el error de Monte Carlo entre escenarios.
     for tabla, columna in ((distribucion, "escenarios"), (resumen, "prob_cumplimiento")):
         if columna == "escenarios":
             exitos = tabla.escenarios.to_numpy(dtype=int)
         else:
             exitos = np.rint(tabla.prob_cumplimiento.to_numpy() * n_escenarios).astype(int)
         limites = [stats.binomtest(int(k), n_escenarios).proportion_ci(
-            confidence_level=.90, method="wilson") for k in exitos]
-        tabla["ic_mc_90_inferior"] = [v.low for v in limites]
-        tabla["ic_mc_90_superior"] = [v.high for v in limites]
+            confidence_level=CONFIANZA, method="wilson") for k in exitos]
+        tabla["ic_mc_inferior"] = [v.low for v in limites]
+        tabla["ic_mc_superior"] = [v.high for v in limites]
+        tabla["nivel_confianza"] = CONFIANZA
     if guardar:
         out = ROOT / "outputs/G3"
         out.mkdir(parents=True, exist_ok=True)
@@ -276,15 +278,15 @@ def main(seed=SEED):
     rows = []
     for _ in range(20):
         lat = simular_fifo(rng, lam, *args, 2, 1030)
-        rows.append([np.median(lat), np.quantile(lat, .95), np.mean(lat > 210)])
+        rows.append([np.median(lat), np.quantile(lat, .95), np.mean(lat > TAU_MS)])
     rows = np.asarray(rows)
     empirical = stable.latencia_ms.to_numpy()
-    measurements = [np.median(empirical), np.quantile(empirical, .95), np.mean(empirical > 210)]
+    measurements = [np.median(empirical), np.quantile(empirical, .95), np.mean(empirical > TAU_MS)]
     records = []
-    for i, metric in enumerate(("mediana_ms", "p95_ms", "proporcion_mayor_210_ms")):
+    for i, metric in enumerate(("mediana_ms", "p95_ms", f"proporcion_mayor_{TAU_MS}_ms")):
         mean, low, high = _intervalo_replicas(rows[:, i])
         records.append(dict(metrica=metric, observado=float(measurements[i]), simulado=mean,
-                            ic_90_inferior=low, ic_90_superior=high,
+                            ic_inferior=low, ic_superior=high, nivel_confianza=CONFIANZA,
                             diferencia_simulado_menos_observado=mean-measurements[i], replicas=20))
     out1 = ROOT / "outputs/G1"
     out1.mkdir(parents=True, exist_ok=True)
@@ -294,13 +296,13 @@ def main(seed=SEED):
     for c in range(1, 6):
         props = []
         for _ in range(30):
-            lat = simular_fifo(rng, lam * 1.5, *args, c, 600, 30)
-            props.append(float(np.mean(lat > 210)))
+            lat = simular_fifo(rng, lam * CRECIMIENTO, *args, c, 600, 30)
+            props.append(float(np.mean(lat > TAU_MS)))
         mean, low, high = _intervalo_replicas(props)
         # La media teórica lognormal permite que utilización y modelo coincidan.
-        rho = lam * 1.5 * (1 - hit) * np.exp(mu + sigma**2 / 2) / (1000 * c)
-        projection.append(dict(gpus=c, rho=rho, violacion=mean, ic_90_inferior=low,
-                               ic_90_superior=high, replicas=30,
+        rho = lam * CRECIMIENTO * (1 - hit) * np.exp(mu + sigma**2 / 2) / (1000 * c)
+        projection.append(dict(gpus=c, rho=rho, violacion=mean, ic_inferior=low,
+                               ic_superior=high, nivel_confianza=CONFIANZA, replicas=30,
                                duracion_s=600, calentamiento_s=30,
                                estable_rho_menor_1=bool(rho < 1)))
     out2 = ROOT / "outputs/G2"
@@ -310,17 +312,17 @@ def main(seed=SEED):
     fig, ax = plt.subplots(figsize=(8, 5))
     # El primer caso es inestable y su resultado se refiere al horizonte finito.
     ax.errorbar(table.gpus, table.violacion,
-                yerr=[table.violacion-table.ic_90_inferior,
-                      table.ic_90_superior-table.violacion], fmt="o-", capsize=4,
-                label="Simulación; IC 90 % entre réplicas")
-    ax.axhline(.01, color="red", linestyle="--", label="Objetivo: 1 %")
-    ax.set(xlabel="Número de GPU", ylabel="Proporción de latencias > 210 ms",
-           title="Figura 9. Capacidad proyectada: g = 1,5")
+                yerr=[table.violacion-table.ic_inferior,
+                      table.ic_superior-table.violacion], fmt="o-", capsize=4,
+                label=f"Simulación; IC {CONFIANZA:.0%} entre réplicas")
+    ax.axhline(EPSILON, color="red", linestyle="--", label=f"Objetivo: {EPSILON:.0%}")
+    ax.set(xlabel="Número de GPU", ylabel=f"Proporción de latencias > {TAU_MS} ms",
+           title=f"Figura 9. Capacidad proyectada: g = {CRECIMIENTO:g}")
     ax.legend()
     fig.tight_layout()
     fig.savefig(out2 / "figura_9_capacidad_slo.png", dpi=160)
     plt.close(fig)
-    metadata = {"S": seed, "lambda_base_s": lam, "lambda_proyectada_s": lam*1.5,
+    metadata = {"S": seed, "lambda_base_s": lam, "lambda_proyectada_s": lam*CRECIMIENTO,
                 "prob_cache": hit, "media_lognormal_ms": float(np.exp(mu + sigma**2/2)),
                 "modelo": "Poisson, caché Bernoulli, red normal, servicio lognormal independiente, FIFO",
                 "limitacion": "λ cuenta filas de solicitudes; no se sabe si incluye reintentos individuales. "
@@ -332,7 +334,7 @@ def main(seed=SEED):
     out3.mkdir(parents=True, exist_ok=True)
     mmc = []
     for c in range(1, 6):
-        rho, p_wait, wait_ms = mmc_espera(lam * 1.5 * (1-hit), np.exp(mu + sigma**2/2), c)
+        rho, p_wait, wait_ms = mmc_espera(lam * CRECIMIENTO * (1-hit), np.exp(mu + sigma**2/2), c)
         mmc.append(dict(gpus=c, rho=rho, probabilidad_espera=p_wait,
                         espera_media_ms=wait_ms, estable=bool(rho < 1)))
     pd.DataFrame(mmc).to_csv(out3 / "contraste_mmc_parcial.csv", index=False)

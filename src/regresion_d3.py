@@ -10,6 +10,7 @@ import pandas as pd
 from scipy import stats
 
 from tiempos_cd import datos_estables
+from parametros import CONFIANZA
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs" / "D3"
@@ -49,7 +50,7 @@ def main():
     r2 = 1-np.sum((squared-aux_pred)**2)/np.sum((squared-squared.mean())**2)
     lm = len(size)*r2
     degrees = len(size)-X.shape[1]
-    critical = stats.t.ppf(.95, degrees)
+    critical = stats.t.ppf((1 + CONFIANZA) / 2, degrees)
     interval_rows = []
     for name, model in (("OLS", ols), ("WLS", wls)):
         for variance_method in ("clasico", "hc3"):
@@ -58,7 +59,7 @@ def main():
                 error = model[f"se_{variance_method}"][idx]
                 interval_rows.append({"modelo": name, "coeficiente": coefficient,
                     "estimacion": estimate, "metodo_se": variance_method,
-                    "error_estandar": error, "nivel": .90,
+                    "error_estandar": error, "nivel": CONFIANZA,
                     "critico_t": critical, "gl": degrees,
                     "limite_inferior": estimate-critical*error,
                     "limite_superior": estimate+critical*error})
@@ -70,7 +71,7 @@ def main():
               "condicion_matriz": wls["condicion_matriz"]},
               "breusch_pagan_lm": float(lm), "bp_gl": 1,
               "bp_p_numerico": float(stats.chi2.sf(lm, 1)),
-              "intervalos": {"nivel": .90, "distribucion": "t de Student",
+              "intervalos": {"nivel": CONFIANZA, "distribucion": "t de Student",
                              "grados_libertad": degrees, "valor_critico": float(critical)},
               "nota": "p numérico cero puede indicar subdesbordamiento; WLS asume la forma de pesos elegida."}
     OUT.mkdir(parents=True, exist_ok=True)

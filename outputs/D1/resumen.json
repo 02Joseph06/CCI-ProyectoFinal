@@ -1,17 +1,17 @@
 {
   "n": 24956,
   "marginal_clase": {
-    "pequeña": 0.2656275044077576,
-    "mediana": 0.6543516589196987,
-    "grande": 0.08002083667254367
+    "pequeña": 0.20464016669338037,
+    "mediana": 0.6840839878185607,
+    "grande": 0.111275845488059
   },
   "marginal_cache": {
     "0": 0.5888764225036064,
-    "1": 0.4111235774963936
+    "1": 0.41112357749639367
   },
-  "chi_cuadrado": 950.1616336695627,
+  "chi_cuadrado": 933.2783740413437,
   "grados_libertad": 2,
-  "p_valor": 4.731760892733954e-207,
-  "frecuencia_esperada_minima": 821.0137842602982,
-  "intervalos": "Wald normal al 90 %; solicitado por el estudiante."
+  "p_valor": 2.193693947962876e-203,
+  "frecuencia_esperada_minima": 1141.690174707485,
+  "intervalos": "Wald normal al 95%."
 }

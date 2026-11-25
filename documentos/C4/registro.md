@@ -1,6 +1,14 @@
+# Actualización vigente — S = 2279892322
+
+N=14; umbral=956.0324 ms; normal=0.06443, Gamma=0.05555, remuestreo=0.07537, IC 95 % [0.07422; 0.07654].
+
+Fuente: ../../outputs/C4/. Confianza 95 %.
+
+## Registro histórico — semilla anterior; no vigente
+
 # C4: c?lculos y documentaci?n
 
-Fuente de este registro: [../../docs/formulas_C_D.md](../../docs/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
+Fuente de este registro: [../calculos/formulas_C_D.md](../calculos/formulas_C_D.md). El c?lculo reproducible y las salidas se identifican en la fuente.
 
 ## C4 — Tiempo total en N solicitudes sin caché
 
